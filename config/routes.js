@@ -4,6 +4,7 @@
 module.exports = function(app){
     require('../routes/index')(app);
     require('../routes/page')(app);
+    require('../routes/listPage')(app);
     
 
     app.use('/*', function(req,res,next){

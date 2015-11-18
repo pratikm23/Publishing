@@ -7,7 +7,7 @@ myApp.service('Page', ['$http', function ($http) {
 
     this.getPageData = function(success){
         $http.get(this.baseRestUrl + '/getPageData').success(function (items) {
-            
+
             success(items);
         });
     }

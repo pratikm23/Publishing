@@ -10,6 +10,11 @@ myApp.config(function ($stateProvider) {
             controller: "addPageCtrl",
             url: "/add-page"
         })
+        .state("page-listing", {
+            templateUrl: "partials/PageListing.html",
+            controller: "PageListingCtrl",
+            url: "/page-listing"
+        })
         .state('users', {
             templateUrl: 'partials/add-edit-users.html',
             controller: 'usersCtrl',
