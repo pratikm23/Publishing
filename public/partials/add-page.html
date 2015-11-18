@@ -2,12 +2,12 @@
     <div class="content">
         <div class="content-container">
             <div class="content-header">
-                <h2 class="content-header-title">{{PageTitle}} New Page</h2>
+                <h2 class="content-header-title">{{PageTitle}} Page</h2>
             </div>
             <!-- /.content-header -->
-            <span class="col-sm-offset-3 col-sm-9" data-ng-show="errorvisible" style="color: red;">{{error}}
+            <span class="col-sm-offset-3 col-sm-9" data-ng-show="errorvisible" style="color: red;">       {{error}}
             </span>
-            <span class="col-sm-offset-3 col-sm-9" data-ng-show="successvisible" style="color: green;">{{success}}
+            <span class="col-sm-offset-3 col-sm-9" data-ng-show="successvisible" style="color: green;">     {{success}}
             </span>
             <form method="post" class="form-horizontal" role="form" name="pageForm" data-ng-submit="submitForm(pageForm.$valid)" novalidate>
                 <div class="row">
@@ -28,33 +28,34 @@
                         <div class="form-group">
                             <label for="packdesc" class="col-sm-3 control-label"><span class="asterisk">*</span>Page Title : </label>
                             <div class="col-sm-9">
-                                <input type="text" name="packname" class="form-control" placeholder="Pack Name" data-ng-model="packname" required>
+                                <input type="text" name="pagetitle" class="form-control" 
+                                placeholder="Page Title" data-ng-model="pagetitle" required>
                                 <input type="hidden" name="ld_Id" class="form-control" data-ng-model="PlanId">
-                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.packname.$dirty">
-                                    <span ng-show="pageForm.packname.$error.required">Pack Name is required.</span>
+                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.pagetitle.$dirty">
+                                    <span ng-show="pageForm.pagetitle.$error.required">Pack Name is required.</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="packtype" class="col-sm-3 control-label"><span class="asterisk">*</span>Page File Name </label>
                              <div class="col-sm-9">
-                                <input type="text" name="packname" class="form-control" placeholder="Pack Name" data-ng-model="packname" required>
+                                <input type="text" name="pagefilename" class="form-control" placeholder="e.g. home.php" data-ng-model="pagefilename" required>
                                 <input type="hidden" name="ld_Id" class="form-control" data-ng-model="PlanId">
-                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.packname.$dirty">
-                                    <span ng-show="pageForm.packname.$error.required">Pack Name is required.</span>
+                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.pagefilename.$dirty">
+                                    <span ng-show="pageForm.pagefilename.$error.required">Pack Name is required.</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="contentType" class="col-sm-3 control-label"><span class="asterisk">*</span>Select Page Type</label>
+                            <label for="pagetype" class="col-sm-3 control-label"><span class="asterisk">*</span>Select Page Type</label>
                             <div class="col-sm-9">
                                 <span class="ui-select">
-                                    <select name="contentType" class="form-control"  data-ng-model="selectedContentTypes" data-ng-options="item.cd_id as item.cd_name for item in ContentTypes" required>
-                                        <!--<option value="">-- Select Stores --</option>-->
+                                    <select name="pagetype" class="form-control"  data-ng-model="selectedPageTypes" data-ng-options="item.cd_id as item.cd_name for item in PageTypes" required>
+                                        <option value="">-- Select Page Type --</option>
                                     </select>
                                 </span>
-                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.selectstores.$dirty">
-                                    <span ng-show="pageForm.selectstores.$error.required">Please Select Content Type.</span>
+                                <span style="color: red" ng-show="pageForm.$submitted || pageForm.pagetype.$dirty">
+                                    <span ng-show="pageForm.pagetype.$error.required">Please Select Content Type.</span>
                                 </span>
                             </div>
                         </div>
@@ -77,55 +78,29 @@
                                 </tr>
                                 </thead>
                                 <tbody data-ng-repeat="portlet in portlets track by $index">
-                                <tr>
-                                    <td>{{$index + 1}}</td>
-                                    <td> 
-                                        <span class="ui-select">
-
-                                            <select name="portletType" class="form-control"  data-ng-model="selectedPortletTypes" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" required>
-                                                <option value="">-- Select One --</option>
-                                            </select>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <input type="number" ng-disabled="selectedPortletTypes == 1" name="packagecount" class="form-control"  data-ng-model="packagecount">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="comment" class="form-control"  
-                                        data-ng-model="comment" required>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>{{$index + 1}}</td>
+                                        <td> 
+                                            <span class="ui-select">
+                                                <select name="portletType" class="form-control"  data-ng-model="selectedPortletTypes[$index]" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" required>
+                                                    <option value="">-- Select One --</option>
+                                                </select>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <input type="number" ng-disabled="selectedPortletTypes[$index] == 1" name="packagecount" class="form-control" data-ng-model="packageCounts[$index]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="comment" class="form-control"  
+                                            data-ng-model="portletComments[$index]" required>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                                <button style="margin-left:94%" type="button" ng-click="addPortlet()"><i class="fa fa-plus"></i></button>
-                               <div class="row" ng-show="Stores.length > pageLimit">
-                                    <div class="col-xs-6 col-sm-6">
-                                        <button type="button" class="btn btn-primary btn-w-xs" title="Previous" data-ng-disabled="currentPageNo == 0" data-ng-click="currentPageNo=currentPageNo-1">Previous</button>
-
-                                    </div>
-                                    <div class="col-xs-6 col-sm-6 text-right">
-                                        <button type="button" class="btn btn-primary btn-w-xs" title="Next" data-ng-disabled="currentPageNo >= Stores.length/pageLimit - 1" data-ng-click="currentPageNo=currentPageNo+1">Next</button>
-                                    </div>
-                              </div>
-
-                                
                         </div>
                     </div>
                 </div>
-
-
-                     
-
-
-                                    <!--<div class="row">
-                                                            <div class="col-xs-12">
-                                                                <div class="col-sm-offset-5 col-sm-7">
-                                                                    <a href="/#/add-store" data-ng-hide="IsAddStore"> <button class="btn btn-primary btn-w-md" title="back">Back To Store</button></a>
-                                                                    <button type="submit" class="btn btn-primary btn-w-md" title="Save">Submit</button>
-                                                                    <button type="reset" data-ng-show="IsAddStore" class="btn btn-default btn-w-md" title="Reset" data-ng-click="resetForm()">Reset</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
             </form>
         </div>
     </div>
