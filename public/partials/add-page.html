@@ -82,22 +82,23 @@
                                         <td>{{$index + 1}}</td>
                                         <td> 
                                             <span class="ui-select">
-                                                <select name="portletType" class="form-control"  data-ng-model="selectedPortletTypes[$index]" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" required>
+                                                <select name="portletType" class="form-control"  data-ng-model="portletsArray[$index].portletType" data-ng-change="changePortletType($index)" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" required>
                                                     <option value="">-- Select One --</option>
                                                 </select>
                                             </span>
                                         </td>
                                         <td>
-                                            <input type="number" ng-disabled="selectedPortletTypes[$index] == 1" name="packagecount" class="form-control" data-ng-model="packageCounts[$index]">
+                                            <input type="number" min="0" ng-keypress="isNumber($event)" ng-disabled="portletsArray[$index].portletType == 1 || portletsArray[$index].portletType == undefined" name="packagecount" class="form-control" data-ng-model="portletsArray[$index].packageCount">
                                         </td>
                                         <td>
-                                            <input type="text" name="comment" class="form-control"  
-                                            data-ng-model="portletComments[$index]" required>
+                                            <input type="text" name="comment" class="form-control" 
+                                            ng-disabled="portletsArray[$index].portletType == undefined" 
+                                            data-ng-model="portletsArray[$index].comment"  required>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                               <button style="margin-left:94%" type="button" ng-click="addPortlet()"><i class="fa fa-plus"></i></button>
+                               <button style="margin-left:94%;color:green" type="button" ng-click="addPortlet()"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
                 </div>

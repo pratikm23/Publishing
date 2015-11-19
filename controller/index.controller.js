@@ -76,10 +76,10 @@ exports.login = function (req, res, next) {
     if (req.session) {
         if (req.session.publish_UserName) {
             if (req.session.publish_StoreId) {
-                res.redirect("/plan-list");
+                res.redirect("/add-page");
             }
             else {
-                res.redirect("/plan-list");
+                res.redirect("/accountlogin");
             }
         }
         else {

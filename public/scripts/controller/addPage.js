@@ -13,11 +13,11 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
     $scope.CurrentPage = $state.current.name;
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
-    $scope.selectedPortletTypes = {};
-    $scope.packageCounts = {};
-    $scope.portletComments = {};
-    
+$scope.init = function(){
+    $scope.portletsArray = {};
+
     $scope.portlets = [{}];
+    $scope.portletIds = [];
 
     $scope.addPortlet = function(){
         var portlet = {};
@@ -29,17 +29,116 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
         {cd_id : 1, cd_name: 'Banner'}
     ]
 
-    $scope.PageTypes = [
-        {cd_id : 1,cd_name:'Home Page'},
-        {cd_id : 2, cd_name: 'Sub-Home Page'},
-        {cd_id : 3, cd_name: 'Content Listing Page'},
-        {cd_id : 4, cd_name: 'First Constent Page'},
-        {cd_id : 5, cd_name: 'Promotion Page'},
-        {cd_id : 6, cd_name: 'Other Page'}
-    ];
+    preData = {
+            state : "add-page"
+    }
 
-    Page.getPageData(function(data){
+    console.log('iddd');
+    console.log($stateParams.pageId);
+    if($stateParams.pageId){
+            //Change predata  for edit mode accordingly.
+            $scope.edit_mode = true;
+            preData.state  = "edit-page";
+            preData.pageId = $stateParams.pageId;
+            // $scope.isAdded  = true;
+    }
+
+
+    console.log(preData);
+   
+
+    Page.getPageData(preData,function(data){
         $scope.distributionChannels = data.DistributionChannel;
-    });
+        $scope.PageTypes = data.PageTypes;
+        if($stateParams.pageId){
+            $scope.pagetitle = data.PageDetails[0].pp_page_title;
+            $scope.pagefilename = data.PageDetails[0].pp_page_file;
+            $scope.selectedPageTypes = data.PageDetails[0].pp_page_type_id;
+            $scope.selectedDistributionChannel = data.PageDetails[0].pp_dc_id;
+            $.each( data.PortletDetails, function(key,value){
+               if(key < data.PortletDetails.length - 1){
+                      var portlet = {};
+                     $scope.portlets.push(portlet);
+               }
+               $scope.portletsArray[key] = {};
+               $scope.portletsArray[key]['portletType'] = value.ppp_type;
+               $scope.portletsArray[key]['comment'] = value.ppp_comments;
+               $scope.portletsArray[key]['packageCount'] = value.ppp_pkg_allow;
+               $scope.portletsArray[key]['portletId'] = value.ppp_id;
+               $scope.portletsArray[key]['isUpdate'] = 0;
 
+               $scope.portletIds.push(value.ppp_id);
+            })
+        }
+    },function(error){
+        console.log(error);
+    });
+}
+    
+$scope.init();
+
+
+    $scope.submitForm = function ( isValid ) {
+        $scope.successvisible = false;
+        $scope.errorvisible = false;
+            var pageData = {
+                page_title: $scope.pagetitle,
+                page_filename: $scope.pagefilename,
+                page_type: $scope.selectedPageTypes,
+                distribution_channel: $scope.selectedDistributionChannel,
+                portlets : $scope.portletsArray
+            };
+        // if (isValid) {
+            if($stateParams.pageId){
+                    pageData.page_id = $stateParams.pageId;
+                    pageData.portletIds = $scope.portletIds;
+                    console.log('in edit');
+                    Page.editPage(pageData,function(data){
+                        ngProgress.start();
+                        if(data.status == 101){
+                            toastr.error(data.message);
+                        }
+                        if(data.status == 200){
+                            toastr.success(data.message);
+                            $scope.init();
+                            debugger;
+                        }
+                        ngProgress.complete();
+                    },function(error){
+                        console.log(error);
+                    });
+            }else{
+                    Page.addPage(pageData,function(data){
+                         ngProgress.start();
+                         if(data.status == 101){
+                            toastr.error(data.message);
+                         }
+                         if(data.status == 200){
+                            toastr.success(data.message);
+                         }
+                         ngProgress.complete();
+                    },function(error){
+                        console.log(error);
+                    });
+            }
+        // }
+    };
+
+
+
+
+    $scope.isNumber = function(e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+        if ( (isNaN( String.fromCharCode(key) ) && key != 8) || key == 32 ) e.preventDefault();
+    }
+
+    $scope.changePortletType = function(index){
+        if($scope.portletsArray[index].portletType == undefined && !$stateParams.pageId){
+           delete $scope.portletsArray[index];
+           // delete $scope.portletIds[index];
+        }else if($scope.portletsArray[index].portletType == undefined && $stateParams.pageId){
+            // delete $scope.portletsArray[index];
+            $scope.portletsArray[index].isUpdate = 1;
+        }
+    }
 });
