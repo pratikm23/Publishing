@@ -40,6 +40,7 @@ exports.pages = function (req, res, next) {
 
     var pagesjson = [
         { 'pagename': 'Add Page', 'href': 'add-page', 'id': 'add-page', 'class': 'fa fa-briefcase', 'submenuflag': '0', 'sub': [] },
+        { 'pagename': 'Map Package', 'href': 'map-package', 'id': 'map-package', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
         { 'pagename': 'Change Password', 'href': 'changepassword', 'id': 'changepassword', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] }
     ];
 
@@ -181,6 +182,7 @@ function getPages(role) {
 
         var pagesjson = [
             { 'pagename': 'Add Page', 'href': 'add-page', 'id': 'add-page', 'class': 'fa fa-briefcase', 'submenuflag': '0', 'sub': [] },
+            { 'pagename': 'Map Package', 'href': 'map-package', 'id': 'map-package', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
             { 'pagename': 'Change Password', 'href': 'changepassword', 'id': 'changepassword', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] }
         ];
         return pagesjson;

@@ -30,7 +30,12 @@ myApp.config(function ($stateProvider) {
             controller: 'usersCtrl',
             url: '/changepassword'
         })
+        .state("map-package", {
+            templateUrl: "partials/map-package.html",
+            controller: "mapPackageCtrl",
+            url: "/map-package/:pageId"
+        })
 })
-    .run(function ($state) {
-        $state.go("add-page");
-    })
+.run(function ($state) {
+    $state.go("add-page");
+})
