@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="content">
+        <div class="content-container">
+            <div class="content-header">
+                <h2 class="content-header-title">Page Listing</h2>
+            </div>
+            <!-- /.content-header -->
+            <span class="col-sm-offset-3 col-sm-9" data-ng-show="errorvisible" style="color: red;">{{error}}
+            </span>
+            <span class="col-sm-offset-3 col-sm-9" data-ng-show="successvisible" style="color: green;">{{success}}
+            </span>
+
+            <form method="post" class="form-horizontal" role="form" name="listpageForm" data-ng-submit="submitForm(listpageForm.$valid)" novalidate>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="col-md-3 col-xs-3"></div>
+                        <div class="col-md-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"><span class="asterisk">*</span>Store Channel</label>
+                            <div class="col-sm-9">
+                                <span class="ui-select">
+                                    <select name="distributionChannel" class="form-control"  data-ng-model="selectedDistributionChannel" data-ng-options="item.cd_id as item.cd_name for item in distributionChannels" required>
+                                        <option value="">-- Select Channel --</option>
+                                    </select>
+                                </span>
+                                <span style="color: red" ng-show="listpageForm.$submitted || listpageForm.distributionChannel.$dirty">
+                                    <span ng-show="listpageForm.distributionChannel.$error.required">Please Select Distribution Channel.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pageType" class="col-sm-3 control-label"><span class="asterisk">*</span>Select Page Type</label>
+                            <div class="col-sm-9">
+                                <span class="ui-select">
+                                    <select name="pageType" class="form-control"  data-ng-model="selectedPageType" data-ng-options="item.cd_id as item.cd_name for item in pageType" required>
+                                        <option value="">-- Select Page Type --</option>
+                                    </select>
+                                </span>
+                                <span style="color: red" ng-show="listpageForm.$submitted || listpageForm.pageType.$dirty">
+                                    <span ng-show="listpageForm.pageType.$error.required">Please Select Page Type.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pagetitle" class="col-sm-3 control-label"><span class="asterisk">*</span>Page Title : </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="pagetitle" class="form-control" placeholder="Page title" data-ng-model="selectedPageTitle" required>
+                                <!--<span style="color: red" ng-show="pageForm.$submitted || pageForm.pagetitle.$dirty">-->
+                                    <!--<span ng-show="pageForm.pagetitle.$error.required">Page title is required.</span>-->
+                                <!--</span>-->
+                            </div>
+                        </div>
+                            <div class="col-md-6 col-xs-6"></div>
+
+                            <button type="submit" class="btn btn-primary btn-w-xs" title="Search"  data-ng-click="search()">Search</button>
+
+                            <br>
+                            <br>
+                        </div>
+                            <div class="col-md-3 col-xs-3"></div>
+
+                        <div class="table-responsive">
+
+                            <div id="user-exportable">
+                            <span class="col-md-offset-3 col-md-9 col-xs-12" data-ng-show="errorvisible" style="color: red;">{{error}}
+                            </span>
+                            <span class="col-md-offset-3 col-md-9 col-xs-12" data-ng-show="successvisible" style="color: green;">{{success}}
+                            </span>
+                                <table id="user-signups" class="table table-striped table-bordered table-checkable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Page Id</th>
+                                        <th class="text-center">Page Title</th>
+                                        <th class="text-center">Page Type</th>
+                                        <th class="text-center">File Name</th>
+                                        <th class="text-center">Total Portlets</th>
+                                        <th class="text-center">Added/Updated On</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody data-ng-repeat="detail in pageDetails | startFrom:listcurrentPage*listpageSize | limitTo:listpageSize ">
+                                    <tr>
+                                        <td class="col-md-1 col-xs-1 text-center">{{$index+1+(listcurrentPage*listpageSize)}}</td>
+                                        <td class="col-md-2 col-xs-2 text-center">{{detail.pp_page_title}}</td>
+                                        <td class="col-md-3 col-xs-3 text-center">{{detail.cd_name}}</td>
+                                        <td class="col-md-2 col-xs-2 text-center">{{detail.pp_page_file}}</td>
+                                        <td class="col-md-1 col-xs-1 text-center">{{detail.count}}</td>
+                                        <td class="col-md-2 col-xs-2 text-center">{{detail.pp_date}}</td>
+                                        <td class="col-md-3 col-xs-3">
+                                            <div class="row">
+                                                <div class="col-md-3 col-xs-3"><a href="" data-ng-click="EditPlan(plan.planid,plan.contenttype)" title="Edit"><i class="fa fa-edit" title="Edit"></i></a></div>
+                                                <div class="col-md-3 col-xs-3"><a href="" data-ng-click="MapPlan(plan.planid,plan.contenttype)" title="Map"><i class="fa fa-external-link" title="Map"></i></a></div>
+
+                                                <!-- <div class="col-md-3 col-xs-4"><a href="" data-ng-click="DeletePlan(plan.planid,plan.contenttype)"><i class="glyphicon glyphicon-remove" title="Delete"></i></a></div>-->
+                                                <!--<div class="col-md-3 col-xs-4" data-ng-show="IsDisable" data-ng-if="plan.active == 1" class="text-right"><a href="" title="Click To Block" data-ng-click="BlockUnBlockPlan(plan.planid,plan.contenttype,plan.active)"><i class="fa fa-ban text-right red" style="color: green;"></i></a></div>-->
+                                                <!--<div class="col-md-3 col-xs-4" data-ng-show="IsDisable" data-ng-if="plan.active == 0" class="text-right"><a href="" title="Click To UnBlock" data-ng-click="BlockUnBlockPlan(plan.planid,plan.contenttype,plan.active)"><i class="fa fa-ban text-right green" style="color: red;"></i></a></div>-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-xs-5"></div>
+                        <div class="col-md-3 col-xs-3" ng-show="pageDetails.length == 0"> No records Found For The Search</div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="col-xs-3 col-md-3">
+                                    <button type="button" class="btn btn-primary btn-w-xs" title="Previous" data-ng-disabled="listcurrentPage == 0" data-ng-click="listcurrentPage=listcurrentPage-1">Previous</button>
+                                </div>
+                                <div class="col-xs-6 col-md-6">
+                                    <button type="button" style="margin-left:32%" class="btn btn-primary btn-w-xs" ng-show="pageDetails.length > 0" title="Download" data-ng-click="ExportPageList()">Download List</button>
+                                </div>
+                                <div class="col-xs-3 col-md-3 text-right">
+                                    <button type="button" class="btn btn-primary btn-w-xs" title="Next" data-ng-disabled="listcurrentPage >= pageDetails.length/listpageSize - 1" data-ng-click="listcurrentPage=listcurrentPage+1">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

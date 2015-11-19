@@ -40,7 +40,7 @@ exports.pages = function (req, res, next) {
 
     var pagesjson = [
         { 'pagename': 'Add Page', 'href': 'add-page', 'id': 'add-page', 'class': 'fa fa-briefcase', 'submenuflag': '0', 'sub': [] },
-        { 'pagename': 'Map Package', 'href': 'map-package', 'id': 'map-package', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
+        { 'pagename': 'Page Listing', 'href': 'page-listing', 'id': 'page-listing', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
         { 'pagename': 'Change Password', 'href': 'changepassword', 'id': 'changepassword', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] }
     ];
 
@@ -76,10 +76,10 @@ exports.login = function (req, res, next) {
     if (req.session) {
         if (req.session.publish_UserName) {
             if (req.session.publish_StoreId) {
-                res.redirect("/plan-list");
+                res.redirect("/add-page");
             }
             else {
-                res.redirect("/plan-list");
+                res.redirect("/accountlogin");
             }
         }
         else {
@@ -182,7 +182,7 @@ function getPages(role) {
 
         var pagesjson = [
             { 'pagename': 'Add Page', 'href': 'add-page', 'id': 'add-page', 'class': 'fa fa-briefcase', 'submenuflag': '0', 'sub': [] },
-            { 'pagename': 'Map Package', 'href': 'map-package', 'id': 'map-package', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
+            { 'pagename': 'Page Listing', 'href': 'page-listing', 'id': 'page-listing', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] },
             { 'pagename': 'Change Password', 'href': 'changepassword', 'id': 'changepassword', 'class': 'fa fa-align-left', 'submenuflag': '0', 'sub': [] }
         ];
         return pagesjson;
