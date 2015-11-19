@@ -69,6 +69,7 @@
                                 <table id="user-signups" class="table table-striped table-bordered table-checkable">
                                     <thead>
                                     <tr>
+                                        <!--<th class="text-center">Sr No.</th>-->
                                         <th class="text-center">Page Id</th>
                                         <th class="text-center">Page Title</th>
                                         <th class="text-center">Page Type</th>
@@ -80,7 +81,8 @@
                                     </thead>
                                     <tbody data-ng-repeat="detail in pageDetails | startFrom:listcurrentPage*listpageSize | limitTo:listpageSize ">
                                     <tr>
-                                        <td class="col-md-1 col-xs-1 text-center">{{$index+1+(listcurrentPage*listpageSize)}}</td>
+                                        <!--<td class="col-md-1 col-xs-1 text-center">{{$index+1+(listcurrentPage*listpageSize)}}</td>-->
+                                        <td class="col-md-1 col-xs-1 text-center">{{detail.pp_id}}</td>
                                         <td class="col-md-2 col-xs-2 text-center">{{detail.pp_page_title}}</td>
                                         <td class="col-md-3 col-xs-3 text-center">{{detail.cd_name}}</td>
                                         <td class="col-md-2 col-xs-2 text-center">{{detail.pp_page_file}}</td>
@@ -88,7 +90,7 @@
                                         <td class="col-md-2 col-xs-2 text-center">{{detail.pp_date}}</td>
                                         <td class="col-md-3 col-xs-3">
                                             <div class="row">
-                                                <div class="col-md-3 col-xs-3"><a href="" data-ng-click="EditPlan(plan.planid,plan.contenttype)" title="Edit"><i class="fa fa-edit" title="Edit"></i></a></div>
+                                                <div class="col-md-3 col-xs-3"><a href="" data-ng-click="EditPage(detail.pp_id)" title="Edit"><i class="fa fa-edit" title="Edit"></i></a></div>
                                                 <div class="col-md-3 col-xs-3"><a href="" data-ng-click="MapPlan(plan.planid,plan.contenttype)" title="Map"><i class="fa fa-external-link" title="Map"></i></a></div>
 
                                                 <!-- <div class="col-md-3 col-xs-4"><a href="" data-ng-click="DeletePlan(plan.planid,plan.contenttype)"><i class="glyphicon glyphicon-remove" title="Delete"></i></a></div>-->

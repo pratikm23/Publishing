@@ -40,5 +40,8 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
         });
     }
 
+   $scope.EditPage = function(pageid){
+       $state.go('edit-page',{'pageId':pageid});
+   }
 
 });
