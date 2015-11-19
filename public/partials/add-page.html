@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="packtype" class="col-sm-3 control-label"><span class="asterisk">*</span>Page File Name </label>
+                            <label for="pagefilename" class="col-sm-3 control-label"><span class="asterisk">*</span>Page File Name </label>
                              <div class="col-sm-9">
                                 <input type="text" name="pagefilename" class="form-control" placeholder="e.g. home.php" data-ng-model="pagefilename" required>
                                 <input type="hidden" name="ld_Id" class="form-control" data-ng-model="PlanId">
@@ -61,8 +61,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-5 col-sm-7">
-                                <button type="submit" class="btn btn-primary btn-w-md" title="Save">Submit</button>
-                                <button type="reset"  class="btn btn-default btn-w-md" title="Reset" data-ng-click="resetForm()">Reset</button>
+                                <button type="submit" ng-disabled="!pageForm.$valid" class="btn btn-primary btn-w-md" title="Save">Submit</button>
+                                <button type="reset" ng-hide="edit_mode" class="btn btn-default btn-w-md" title="Reset" data-ng-click="resetForm()">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                                         <td>{{$index + 1}}</td>
                                         <td> 
                                             <span class="ui-select">
-                                                <select name="portletType" class="form-control"  data-ng-model="portletsArray[$index].portletType" data-ng-change="changePortletType($index)" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" required>
+                                                <select name="portletType" class="form-control"  data-ng-model="portletsArray[$index].portletType" data-ng-change="changePortletType($index)" data-ng-options="item.cd_id as item.cd_name for item in PortletTypes" >
                                                     <option value="">-- Select One --</option>
                                                 </select>
                                             </span>
@@ -93,7 +93,7 @@
                                         <td>
                                             <input type="text" name="comment" class="form-control" 
                                             ng-disabled="portletsArray[$index].portletType == undefined" 
-                                            data-ng-model="portletsArray[$index].comment"  required>
+                                            data-ng-model="portletsArray[$index].comment"  >
                                         </td>
                                     </tr>
                                 </tbody>

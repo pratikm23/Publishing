@@ -5,6 +5,8 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
     if($stateParams.pageId){
      $scope.PageTitle = 'Edit';   
     }
+
+
     
 	$scope.success = "";
     $scope.successvisible = false;
@@ -88,7 +90,7 @@ $scope.init();
                 distribution_channel: $scope.selectedDistributionChannel,
                 portlets : $scope.portletsArray
             };
-        // if (isValid) {
+        if (isValid) {
             if($stateParams.pageId){
                     pageData.page_id = $stateParams.pageId;
                     pageData.portletIds = $scope.portletIds;
@@ -120,7 +122,7 @@ $scope.init();
                         console.log(error);
                     });
             }
-        // }
+        }
     };
 
 
@@ -138,6 +140,10 @@ $scope.init();
         }else if($scope.portletsArray[index].portletType == undefined && $stateParams.pageId){
             // delete $scope.portletsArray[index];
             $scope.portletsArray[index].isUpdate = 1;
+            $scope.portletsArray[index].comment = null;
+            $scope.portletsArray[index].packageCount = null;
+        }else if($scope.portletsArray[index].portletType == 1){
+            $scope.portletsArray[index].packageCount = null;
         }
     }
 });
