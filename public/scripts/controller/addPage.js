@@ -101,7 +101,6 @@ $scope.init();
                         if(data.status == 200){
                             toastr.success(data.message);
                             $scope.init();
-                            debugger;
                         }
                         ngProgress.complete();
                     },function(error){
