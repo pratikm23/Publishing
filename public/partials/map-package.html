@@ -30,17 +30,18 @@
                                         {{item.ppp_comments}}
                                     </td>
 
-                                    <td style="width:30px;">
+                                    <td style="white-space: nowrap;display: inline-flex;overflow-x: scroll; width: 500px;">
 
-                                        <div style="width:40%;float:left" data-ng-repeat="i in [] | range:item.ppp_pkg_allow">
+                                        <div style="float:left;display: inline-flex" data-ng-repeat="i in [] | range:item.ppp_pkg_allow">
                                             <div>
-                                                <input type="number" name="packageId_{{$index}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-keyup="checkValidPackage( mapPackage[item.ppp_id][i]['packageId'] )" required/>
+                                                <input type="number" style="width: 80px" name="packageId_{{$index}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-keyup="checkValidPackage( mapPackage[item.ppp_id][i]['packageId'] )" required/>
                                                 <span style="color: red" ng-show="mapPackageForm.$submitted || mapPackageForm.packageId_{{$index}}.$dirty">
                                                     <span ng-show="mapPackageForm.packageId_{{$index}}.$error.required">This field is required.</span>
                                                 </span>
-                                                <span ng-show="i+1 < item.ppp_pkg_allow">
-                                                    <i class="fa fa-plus"></i>
-                                                </span>
+
+                                            </div>
+                                            <div  ng-show="i+1 < item.ppp_pkg_allow">
+                                                    <i style="padding: 5px" class="fa fa-plus"></i>
                                             </div>
                                         </div>
 
