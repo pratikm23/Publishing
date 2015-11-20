@@ -26,13 +26,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="packdesc" class="col-sm-3 control-label"><span class="asterisk">*</span>Page Title : </label>
+                            <label for="pagetitle" class="col-sm-3 control-label"><span class="asterisk">*</span>Page Title : </label>
                             <div class="col-sm-9">
                                 <input type="text" name="pagetitle" class="form-control" 
                                 placeholder="Page Title" data-ng-model="pagetitle" required>
                                 <input type="hidden" name="ld_Id" class="form-control" data-ng-model="PlanId">
                                 <span style="color: red" ng-show="pageForm.$submitted || pageForm.pagetitle.$dirty">
-                                    <span ng-show="pageForm.pagetitle.$error.required">Pack Name is required.</span>
+                                    <span ng-show="pageForm.pagetitle.$error.required">Page Title is required.</span>
                                 </span>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                 <input type="text" name="pagefilename" class="form-control" placeholder="e.g. home.php" data-ng-model="pagefilename" required>
                                 <input type="hidden" name="ld_Id" class="form-control" data-ng-model="PlanId">
                                 <span style="color: red" ng-show="pageForm.$submitted || pageForm.pagefilename.$dirty">
-                                    <span ng-show="pageForm.pagefilename.$error.required">Pack Name is required.</span>
+                                    <span ng-show="pageForm.pagefilename.$error.required">Page File Name is required.</span>
                                 </span>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                             <input type="number" min="0" ng-keypress="isNumber($event)" ng-disabled="portletsArray[$index].portletType == 1 || portletsArray[$index].portletType == undefined" name="packagecount" class="form-control" data-ng-model="portletsArray[$index].packageCount">
                                         </td>
                                         <td>
-                                            <input type="text" name="comment" class="form-control" 
+                                            <input type="text" maxlength="100" name="comment" class="form-control" 
                                             ng-disabled="portletsArray[$index].portletType == undefined" 
                                             data-ng-model="portletsArray[$index].comment"  >
                                         </td>

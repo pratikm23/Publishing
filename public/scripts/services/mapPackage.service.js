@@ -12,8 +12,8 @@ myApp.service('mapPackage', ['$http', function ($http) {
         });
     }
 
-    this.addMapPortletData = function( data, success ){
-        $http.post( this.baseRestUrl + '/addMapPortletData', data ).success(function ( response ) {
+    this.addOrUpdateMapPortletData = function( data, success ){
+        $http.post( this.baseRestUrl + '/addOrUpdateMapPortletData', data ).success(function ( response ) {
             success( response );
         });
     }
