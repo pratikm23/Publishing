@@ -5,7 +5,7 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
     if($stateParams.pageId){
      $scope.PageTitle = 'Edit';   
     }
-    
+
 	$scope.success = "";
     $scope.successvisible = false;
     $scope.error = "";
@@ -13,6 +13,7 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
     $scope.CurrentPage = $state.current.name;
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
+
 $scope.init = function(){
     $scope.portletsArray = {};
 
@@ -63,7 +64,12 @@ $scope.init = function(){
                $scope.portletsArray[key] = {};
                $scope.portletsArray[key]['portletType'] = value.ppp_type;
                $scope.portletsArray[key]['comment'] = value.ppp_comments;
-               $scope.portletsArray[key]['packageCount'] = value.ppp_pkg_allow;
+               if(value.ppp_type == 1){ //if banner
+                    $scope.portletsArray[key]['packageCount'] = null;
+               }else{
+                     $scope.portletsArray[key]['packageCount'] = value.ppp_pkg_allow;
+               }
+                
                $scope.portletsArray[key]['portletId'] = value.ppp_id;
                $scope.portletsArray[key]['isUpdate'] = 0;
 
@@ -88,40 +94,43 @@ $scope.init();
                 distribution_channel: $scope.selectedDistributionChannel,
                 portlets : $scope.portletsArray
             };
-        // if (isValid) {
-            if($stateParams.pageId){
-                    pageData.page_id = $stateParams.pageId;
-                    pageData.portletIds = $scope.portletIds;
-                    console.log('in edit');
-                    Page.editPage(pageData,function(data){
-                        ngProgress.start();
-                        if(data.status == 101){
-                            toastr.error(data.message);
-                        }
-                        if(data.status == 200){
-                            toastr.success(data.message);
-                            $scope.init();
-                            debugger;
-                        }
-                        ngProgress.complete();
-                    },function(error){
-                        console.log(error);
-                    });
+        if (isValid) {
+            if($scope.pagefilename.match(/[a-z]*[.][a-z]*/) == $scope.pagefilename){
+                if($stateParams.pageId){
+                        pageData.page_id = $stateParams.pageId;
+                        pageData.portletIds = $scope.portletIds;
+                        console.log('in edit');
+                        Page.editPage(pageData,function(data){
+                            ngProgress.start();
+                            if(data.status == 101){
+                                toastr.error(data.message);
+                            }
+                            if(data.status == 200){
+                                toastr.success(data.message);
+                                $scope.init();
+                            }
+                            ngProgress.complete();
+                        },function(error){
+                            console.log(error);
+                        });
+                }else{
+                        Page.addPage(pageData,function(data){
+                             ngProgress.start();
+                             if(data.status == 101){
+                                toastr.error(data.message);
+                             }
+                             if(data.status == 200){
+                                toastr.success(data.message);
+                             }
+                             ngProgress.complete();
+                        },function(error){
+                            console.log(error);
+                        });
+                }
             }else{
-                    Page.addPage(pageData,function(data){
-                         ngProgress.start();
-                         if(data.status == 101){
-                            toastr.error(data.message);
-                         }
-                         if(data.status == 200){
-                            toastr.success(data.message);
-                         }
-                         ngProgress.complete();
-                    },function(error){
-                        console.log(error);
-                    });
+                toastr.error('Invalid Page File Name . Page File Name must be in given format e.g. home.php');
             }
-        // }
+        }
     };
 
 
@@ -139,6 +148,10 @@ $scope.init();
         }else if($scope.portletsArray[index].portletType == undefined && $stateParams.pageId){
             // delete $scope.portletsArray[index];
             $scope.portletsArray[index].isUpdate = 1;
+            $scope.portletsArray[index].comment = null;
+            $scope.portletsArray[index].packageCount = null;
+        }else if($scope.portletsArray[index].portletType == 1){ // if banner
+            $scope.portletsArray[index].packageCount = null;
         }
     }
 });

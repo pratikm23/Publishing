@@ -148,8 +148,18 @@ exports.authenticate = function (req, res, next) {
                                 session.publish_lastlogin = row[0].ld_last_login;
                                 session.publish_UserType = row[0].ld_user_type;
                                 session.publish_StoreId = row[0].su_st_id;//coming from new store's user table.
-                                connection_central.release();
-                                res.redirect('/');
+                                
+                                var query = connection_central.query('UPDATE icn_login_detail '+
+                            '               SET ld_last_login=NOW() WHERE ld_id=? ', [row[0].ld_id], function (err, row, fields) {
+                                if (err) {
+                                    res.render('account-login', { error: 'Error in database connection.' });
+                                } else {
+                                    connection_central.release();
+                                    res.redirect('/');
+                                }
+                            });
+
+                                
                             } else {
                                 connection_central.release();
                                 res.render('account-login', { error: 'Only Store Admin/Manager are allowed to login.' });
@@ -161,7 +171,20 @@ exports.authenticate = function (req, res, next) {
                         }
                     } else {
                         connection_central.release();
-                        res.render('account-login', { error: 'Invalid Username / Password.' });
+
+                     
+                        if( req.body.username.length == 0  &&  req.body.password.length == 0 ) {
+                            res.render('account-login', {error: 'Please enter username and password'});
+                        }else if(req.body.username.length != 0  &&  req.body.password.length == 0 ){
+                            res.render('account-login', {error: 'Please enter password'});
+                        }
+                        else if(req.body.username.length == 0  &&  req.body.password.length != 0){
+                            res.render('account-login', {error: 'Please enter username'});
+                        }
+                        else {
+                            res.render('account-login', {error: 'Invalid Username / Password'});
+                        }
+
                     }
                 }
             });
@@ -234,7 +257,7 @@ exports.forgotPassword = function (req, res, next) {
                                 res.end("error");
                             } else {
                                 connection_central.release();
-                                res.render('account-forgot', { error: '', msg: 'Please check your mail. Password successfully sent to your email' });
+                                res.render('account-forgot', { error: '', msg: 'Password successfully sent to your email. Please Check.' });
                                 res.end("sent");
                             }
                         });

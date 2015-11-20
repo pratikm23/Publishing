@@ -11,7 +11,7 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
     $scope.CurrentPage = $state.current.name;
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
-
+    $scope.disable_btn= true ;
 
     ListPage.getListPageData(function(data){
         $scope.distributionChannels = data.DistributionChannel;
@@ -28,6 +28,7 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
         });
     }
     $scope.search = function(){
+        $scope.disable_btn = false;
         var criteria = {
             distributionChannelId : $scope.selectedDistributionChannel,
             page_type : $scope.selectedPageType,
@@ -40,5 +41,10 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
         });
     }
 
-
+   $scope.EditPage = function(pageid){
+       $state.go('edit-page',{'pageId':pageid});
+   }
+    $scope.MapPage = function(pageid){
+        $state.go('map-package',{'pageId':pageid});
+    }
 });

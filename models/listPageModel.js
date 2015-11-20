@@ -19,7 +19,7 @@ exports.getAllPageTypeDetails = function(dbConnection,data ,callback) {
         whereCond += " AND pp.pp_page_type_id = "+data.pageType+" ";
     }
     var query = dbConnection.query(" SELECT  cd.cd_name , DATE_FORMAT(pp.pp_created_on,'%e-%b-%y') as pp_date , (Select  Count(ppp.ppp_id) From icn_pub_page_portlet as ppp " +
-    "  Where ppp.ppp_pp_id  = pp.pp_id  ) as count ,  pp.* FROM `icn_pub_page` as pp " +
+    "  Where ppp.ppp_pp_id  = pp.pp_id AND ISNULL(ppp.ppp_crud_isactive) ) as count ,  pp.* FROM `icn_pub_page` as pp " +
     " LEFT JOIN catalogue_detail as cd ON cd.cd_id = pp.pp_page_type_id " +
     " Where pp.pp_sp_st_id = ? AND pp.pp_dc_id = ? AND ISNULL(pp.pp_crud_isactive) " + whereCond + "ORDER BY pp.pp_page_title" , [data.storeId,data.distributionChannelId] ,
         function (err, PageTypeDetails) {

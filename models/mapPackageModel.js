@@ -6,8 +6,8 @@ exports.getMappingDataByPageId = function( dbConnection, pageId, storeId, callba
     dbConnection.query('SELECT portlet.* FROM icn_pub_page_portlet AS portlet '+
                                 'JOIN icn_pub_page AS pub ON ( pub.pp_id = portlet.ppp_pp_id ) '+
                                 'WHERE portlet.ppp_pp_id = ? AND pub.pp_sp_st_id = ? ' +
-                                    'AND portlet.ppp_is_active = 1 AND ISNULL( portlet.ppp_crud_isactive ) ' +
-                                    'AND ISNULL( pub.pp_crud_isactive )',
+                                'AND portlet.ppp_is_active = 1 AND ISNULL( portlet.ppp_crud_isactive ) ' +
+                                'AND ISNULL( pub.pp_crud_isactive )',
                 [ pageId, storeId ],
         function( err, mappingData ) {
             callback( err,mappingData );
