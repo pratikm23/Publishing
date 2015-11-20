@@ -137,6 +137,7 @@ function addOrUpdateMappingPackageData( connection_ikon_cms, mappingData, req, r
                     updateMappingPackageDetails( req, res, connection_ikon_cms, response[0], mappingData[count] );
                 }
             }else {
+                console.log(mappingData);
                 addMappingPackageDetails( req, res, connection_ikon_cms, mappingData[count] );
             }
 
@@ -210,8 +211,13 @@ function addMappingPackageDetails(  req, res, connection_ikon_cms, mappingData )
             res.status(500).json(err.message);
         } else {
             console.log( mappingData );
+            if(mappingData.portletMapId != undefined){
+                lastInsertedId = mappingData.portletMapId;
+            }else{
+                lastInsertedId = lastInsertedId != null ? parseInt( lastInsertedId + 1 ) : 1;
+            }
             var mappingPackageData = {
-                pmpp_id: lastInsertedId != null ? parseInt( lastInsertedId + 1 ) : 1,
+                pmpp_id: lastInsertedId,
                 pmpp_ppp_id : mappingData.portletId,
                 pmpp_sp_pkg_id: mappingData.packageId,
                 pmpp_created_on : new Date(),

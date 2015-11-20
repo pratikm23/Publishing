@@ -21,7 +21,7 @@ exports.getMappingPackageDataByPageId = function( dbConnection, pageId, storeId,
         'JOIN icn_pub_page AS pub ON ( pub.pp_id = portlet.ppp_pp_id ) '+
         'WHERE portlet.ppp_pp_id = ? AND pub.pp_sp_st_id = ? ' +
         'AND portlet.ppp_is_active = 1 AND ISNULL( portlet.ppp_crud_isactive ) ' +
-        'AND ISNULL( pub.pp_crud_isactive ) AND ISNULL( pub_map.pmpp_crud_isactive ) AND portlet.ppp_pkg_allow > 0',
+        'AND ISNULL( pub.pp_crud_isactive ) AND ISNULL( pub_map.pmpp_crud_isactive ) AND portlet.ppp_pkg_allow > 0 ORDER BY pub_map.pmpp_id ',
         [ pageId, storeId ],
         function( err, mappingData ) {
             callback( err,mappingData );
