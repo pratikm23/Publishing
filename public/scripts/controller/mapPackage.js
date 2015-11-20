@@ -14,30 +14,70 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
 
-    if( $stateParams.pageId == '' ) {
-        $stateParams.pageId = undefined;
-    }
-
-    $scope.pageId = $stateParams.pageId;
-
-    var data = {
-        pageId : $scope.pageId
-    }
-    $scope.mapPackage = [];
-
-    mapPackage.getMappingData( data, function( mappingPageData ){
-        $scope.mappingData = angular.copy( mappingPageData.mappingData );
-    });
-
-    $scope.checkValidPackage = function( packageId ) {
-        var packageObj = {
-            "packageId" : packageId
+    $scope.init = function() {
+        if ($stateParams.pageId == '') {
+            $stateParams.pageId = undefined;
         }
-        mapPackage.getPackageInfo( packageObj, function( response ){
-            if( response.error == true ) {
-                toastr.error(response.message);
-            }
-        });
+
+        $scope.pageId = $stateParams.pageId;
+
+        var data = {
+            pageId: $scope.pageId
+        }
+        $scope.mapPackage = {};
+
+        mapPackage.getMappingData(data, function (mappingPageData) {
+            $scope.mappingData = angular.copy(mappingPageData.mappingData);
+            $scope.mappingPackageData = angular.copy(mappingPageData.mappingPackageData);
+
+            var mappingArray = [];
+            var mKey = 0;
+            angular.forEach($scope.mappingPackageData, function (mapValue, mapKey) {
+                if (_.contains(mappingArray, mapValue.pmpp_ppp_id)) {
+                    mKey++;
+                } else {
+                    mappingArray.push(mapValue.pmpp_ppp_id);
+                    mKey = 0;
+                }
+                if (!_.has($scope.mapPackage, mapValue.pmpp_ppp_id)) {
+                    $scope.mapPackage[mapValue.pmpp_ppp_id] = {};
+                }
+                if (!_.has($scope.mapPackage[mapValue.pmpp_ppp_id], mKey)) {
+                    $scope.mapPackage[mapValue.pmpp_ppp_id][mKey] = {};
+                }
+
+                $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['packageId'] = mapValue.pmpp_sp_pkg_id;
+                $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['portletMapId'] = mapValue.pmpp_id;
+            });
+         });
+     };
+
+    $scope.init();
+
+    var delay = (function(){
+        var timer = 0;
+        return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+
+    $scope.checkValidPackage = function( packageId , packageIndex ) {
+        if( $( "#packageId_" + packageIndex ).val() != '' ) {
+            delay(function () {
+                var packageObj = {
+                    "packageId": $("#packageId_" + packageIndex).val()
+                }
+                mapPackage.getPackageInfo(packageObj, function (response) {
+                    if (response.error == true) {
+                        toastr.error(response.message);
+                        $("#packageId_" + packageIndex).val('');
+                        $("#packageId_" + packageIndex).focus();
+                    }
+                });
+            }, 200);
+        }
     }
 
     $scope.submitForm = function( $valid ){
@@ -49,17 +89,22 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
                     $.each( mapObject, function( key, mapPackageObject ) {
                         $scope.mapPackageData.push({
                             "portletId" : mapPackageKey,
-                            "packageId" : mapPackageObject.packageId
+                            "packageId" : mapPackageObject.packageId,
+                            "portletMapId" : mapPackageObject.portletMapId
                         });
                     });
                 }
             });
             if( $scope.mapPackageData.length > 0 ) {
                 ngProgress.start();
-                mapPackage.addMapPortletData( $scope.mapPackageData, function( response ){
+                mapPackage.addOrUpdateMapPortletData( $scope.mapPackageData, function( response ){
                     if (response.success) {
                         toastr.success(response.message);
                         ngProgress.complete();
+                        setTimeout( function() {
+                            $scope.init();
+                        }, 1000 );
+
                     }
                 });
             }
