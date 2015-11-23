@@ -28,12 +28,14 @@
                                         <input type="hidden" name="comment_{{$index}}" ng-model="mapPackage[$index]['comment']" />
                                         {{item.ppp_comments}}
                                     </td>
+                                    {{item.ppp_pkg_allow}}
+                                    <td ng-class="item.ppp_pkg_allow <= 4 ? 'map_td_not_scrollable' : ( item.ppp_pkg_allow > 4 ? 'map_td_scrollable' : '') "
 
-                                    <td style="white-space: nowrap;display: inline-flex;overflow-x: scroll; width: 500px;">
+                                            >
 
                                         <div style="float:left;display: inline-flex" data-ng-repeat="i in [] | range:item.ppp_pkg_allow">
                                             <div>
-                                                <input type="number" style="width: 80px" id="packageId_{{$parent.$index}}_{{i}}" name="packageId_{{$parent.$index}}_{{i}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-blur="checkValidPackage( mapPackage[item.ppp_id][i],  $parent.$index + '_' + i );" required/>
+                                                <input type="number" style="width: 80px" id="packageId_{{$parent.$index}}_{{i}}" name="packageId_{{$parent.$index}}_{{i}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-blur="checkValidPackage( mapPackage[item.ppp_id][i],  $parent.$index + '_' + i );" ng-keypress="isNumber($event)" min="0" required/>
                                                 <span style="color: red" ng-show="mapPackageForm.$submitted || mapPackageForm.packageId_{{$parent.$index}}_{{i}}.$dirty">
                                                     <span ng-show="mapPackageForm.packageId_{{$parent.$index}}_{{i}}.$error.required">This field is required.</span>
                                                 </span>

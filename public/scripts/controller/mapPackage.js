@@ -110,4 +110,8 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
             }
         }
     }
+    $scope.isNumber = function(e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+        if( (isNaN(String.fromCharCode(key)) && key !=8 )||key == 32) e.preventDefault();
+    }
 });

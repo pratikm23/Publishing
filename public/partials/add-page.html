@@ -88,7 +88,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" ng-keypress="isNumber($event)" ng-disabled="portletsArray[$index].portletType == 1 || portletsArray[$index].portletType == undefined" name="packagecount" class="form-control" data-ng-model="portletsArray[$index].packageCount">
+                                            <input type="number" min="0" max="10" ng-keypress="isNumber($event)" ng-disabled="portletsArray[$index].portletType == 1 || portletsArray[$index].portletType == undefined" name="packagecount" class="form-control" data-ng-model="portletsArray[$index].packageCount">
                                         </td>
                                         <td>
                                             <input type="text" maxlength="100" name="comment" class="form-control" 
