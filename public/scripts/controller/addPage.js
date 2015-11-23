@@ -11,6 +11,7 @@ myApp.controller('addPageCtrl', function ($scope, $http, $stateParams,$state, ng
     $scope.error = "";
     $scope.errorvisible = false;
     $scope.CurrentPage = $state.current.name;
+    $scope.editInProgress = false;
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
 
@@ -97,6 +98,7 @@ $scope.init();
         if (isValid) {
             if($scope.pagefilename.match(/[a-z]*[.][a-z]*/) == $scope.pagefilename){
                 if($stateParams.pageId){
+                        $scope.editInProgress = true;
                         pageData.page_id = $stateParams.pageId;
                         pageData.portletIds = $scope.portletIds;
                         console.log('in edit');
@@ -107,7 +109,10 @@ $scope.init();
                             }
                             if(data.status == 200){
                                 toastr.success(data.message);
-                                $scope.init();
+                                 setTimeout( function() {
+                                    $scope.init();
+                                    $scope.editInProgress = false;
+                                 },1000);
                             }
                             ngProgress.complete();
                         },function(error){
@@ -121,6 +126,7 @@ $scope.init();
                              }
                              if(data.status == 200){
                                 toastr.success(data.message);
+                                $state.reload();
                              }
                              ngProgress.complete();
                         },function(error){

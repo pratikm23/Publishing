@@ -64,8 +64,8 @@ exports.deleteExistingPage = function(dbConnection,pageId,callback){
 }
 
 exports.deleteExistingPortlets = function(dbConnection,pageId,callback){
-	dbConnection.query("UPDATE icn_pub_page_portlet  SET `ppp_crud_isactive` = ? WHERE ppp_pp_id = ?",
-			[pageId,pageId],function (err, result) {
+	dbConnection.query("UPDATE icn_pub_page_portlet  SET `ppp_crud_isactive` = `ppp_id` WHERE ppp_pp_id = ?",
+			[pageId],function (err, result) {
 	            callback(err,result);
         });
 }
@@ -136,16 +136,23 @@ exports.getLastInsertedPortletId = function( dbConnection, callback) {
 }
 
 exports.savePage = function(dbConnection,data,callback){
-	var query = dbConnection.query("INSERT INTO `icn_pub_page` SET ? ",data, function (err, response) {
-		callback(err,response);
+	var query = dbConnection.query(" DELETE FROM `icn_pub_page` WHERE pp_id = ? AND pp_sp_st_id = ? AND pp_dc_id = ? AND pp_page_title = ? AND pp_page_file = ? AND pp_page_type_id = ? AND pp_crud_isactive IS NOT NULL",[data.pp_id, data.pp_sp_st_id,data.pp_dc_id,data.pp_page_title,data.pp_page_file,data.pp_page_type_id],function(err,response){
+		if(err){
+
+		}else{
+				var query = dbConnection.query("INSERT INTO `icn_pub_page` SET ? ",data, function (err, response) {
+					callback(err,response);
+				});
+		}
 	});
 }
 
 exports.savePortlet = function(dbConnection,data,callback){
-
-	var query = dbConnection.query("INSERT INTO `icn_pub_page_portlet` SET ? ",data, function (err, response) {
-		callback(err,response);
-	});
+	
+			var query = dbConnection.query("INSERT INTO `icn_pub_page_portlet` SET ? ",data, function (err, response) {
+				callback(err,response);
+			});
+	
 }
 
 

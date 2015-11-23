@@ -108,7 +108,7 @@ exports.addPage = function (req, res, next) {
                                 var count = Object.keys(req.body.portlets).length;
                                 if(count == 0){
                                     connection_ikon_cms.release();
-                                    res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                    res.send({"success" : true,"status":200, "message":"Page successfully added."});
                                 }else{
                                     var cnt = 0;
                                     loop(0);
@@ -135,7 +135,7 @@ exports.addPage = function (req, res, next) {
                                                         cnt = cnt + 1;
                                                         if(cnt == count){
                                                             connection_ikon_cms.release();
-                                                            res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                                            res.send({"success" : true,"status":200, "message":"Page successfully added."});
                                                         }else{
                                                             loop(cnt);
                                                         }
@@ -227,7 +227,7 @@ exports.editPage = function (req, res, next) {
 
                                 if(count == 0){
                                     connection_ikon_cms.release();
-                                    res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                    res.send({"success" : true,"status":200, "message":"Page successfully updated."});
                                 }else{
                                     var cnt = 0;
                                     loop(0);
@@ -259,7 +259,7 @@ exports.editPage = function (req, res, next) {
                                                             cnt = cnt + 1;
                                                             if(cnt == count){
                                                                 connection_ikon_cms.release();
-                                                                res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                                                res.send({"success" : true,"status":200, "message":"Page successfully updated."});
                                                             }else{
                                                                 loop(cnt);
                                                             }
@@ -290,7 +290,7 @@ exports.editPage = function (req, res, next) {
                                                                         cnt = cnt + 1;
                                                                         if(cnt == count){
                                                                             connection_ikon_cms.release();
-                                                                            res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                                                            res.send({"success" : true,"status":200, "message":"Page successfully updated."});
                                                                         }else{
                                                                             loop(cnt);
                                                                         }
@@ -307,7 +307,7 @@ exports.editPage = function (req, res, next) {
                                             if(cnt == count){
                                                 console.log('count is  EQUALLL count');
                                                 connection_ikon_cms.release();
-                                                res.send({"success" : true,"status":200, "message":"Pack successfully added."});
+                                                res.send({"success" : true,"status":200, "message":"Page successfully updated."});
                                             }else{
 
                                                 loop(cnt);
