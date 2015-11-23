@@ -79,6 +79,9 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
             }, 200);
         }
     }
+    $scope.resetForm = function(){
+        $scope.mapPackage = [];
+    }
 
     $scope.submitForm = function( $valid ){
         if( $valid ) {

@@ -10,7 +10,7 @@
             <span class="col-sm-offset-3 col-sm-9" data-ng-show="successvisible" style="color: green;">{{success}}
             </span>
 
-            <form method="post" class="form-horizontal" role="form" name="listpageForm" data-ng-submit="submitForm(listpageForm.$valid)" novalidate>
+            <form method="post" class="form-horizontal" role="form" name="listpageForm"  novalidate>
                 <div class="row">
                     <div class="col-md-12 col-xs-12">
                         <div class="col-md-3 col-xs-3"></div>
@@ -42,9 +42,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="pagetitle" class="col-sm-3 control-label"><span class="asterisk">*</span>Page Title : </label>
+                            <label for="pagetitle" class="col-sm-3 control-label">Page Title : </label>
                             <div class="col-sm-9">
-                                <input type="text" name="pagetitle" class="form-control" placeholder="Page title" data-ng-model="selectedPageTitle" required>
+                                <input type="text" name="pagetitle" class="form-control" placeholder="Page title" data-ng-model="selectedPageTitle" >
                                 <!--<span style="color: red" ng-show="pageForm.$submitted || pageForm.pagetitle.$dirty">-->
                                     <!--<span ng-show="pageForm.pagetitle.$error.required">Page title is required.</span>-->
                                 <!--</span>-->
@@ -52,7 +52,7 @@
                         </div>
                             <div class="col-md-6 col-xs-6"></div>
 
-                            <button type="submit" class="btn btn-primary btn-w-xs" title="Search"  data-ng-click="search()">Search</button>
+                            <button type="submit" class="btn btn-primary btn-w-xs" title="Search"  data-ng-click="search(listpageForm.$valid)">Search</button>
 
                             <br>
                             <br>

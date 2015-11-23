@@ -27,18 +27,21 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
             window.saveAs(blob, 'PageList.xlsx');
         });
     }
-    $scope.search = function(){
-        $scope.disable_btn = false;
-        var criteria = {
-            distributionChannelId : $scope.selectedDistributionChannel,
-            page_type : $scope.selectedPageType,
-            page_title : $scope.selectedPageTitle
+    $scope.search = function(valid) {
+        console.log(valid);
+        if (valid) {
+            $scope.disable_btn = false;
+            var criteria = {
+                distributionChannelId: $scope.selectedDistributionChannel,
+                page_type: $scope.selectedPageType,
+                page_title: $scope.selectedPageTitle
+            }
+            ListPage.getListPageDetailOnSearch(criteria, function (data) {
+                $scope.pageDetails = data.PageDetails;
+            }, function (error) {
+                console.log(error);
+            });
         }
-        ListPage.getListPageDetailOnSearch(criteria,function(data){
-            $scope.pageDetails = data.PageDetails;
-        },function(error){
-            console.log(error);
-        });
     }
 
    $scope.EditPage = function(pageid){
