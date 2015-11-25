@@ -106,6 +106,7 @@ exports.addPage = function (req, res, next) {
                             if( result == true ){
                                 //Fetching object length as .length of just object gives undefined, hence using Object.keys
                                 var count = Object.keys(req.body.portlets).length;
+                                console.log(count)
                                 if(count == 0){
                                     connection_ikon_cms.release();
                                     res.send({"success" : true,"status":200, "message":"Page successfully added."});
@@ -114,32 +115,50 @@ exports.addPage = function (req, res, next) {
                                     loop(0);
                                     function loop( cnt ) {
                                         var i = cnt;
+                                        console.log(i)
                                         pageManager.getLastInsertedPortletId( connection_ikon_cms, function(err, response ) {
                                                 if(err){
                                                     connection_ikon_cms.release();   
                                                 }else{
-                                                    var portletData = {
-                                                        ppp_id : response[0].maxPortletId,
-                                                        ppp_pp_id : results.MaxPageId[0].maxId,
-                                                        ppp_type : req.body.portlets[i].portletType,
-                                                        ppp_pkg_allow : req.body.portlets[i].packageCount == undefined || req.body.portlets[i].packageCount == undefined ? 0 : req.body.portlets[i].packageCount,
-                                                        ppp_comments : req.body.portlets[i].comment,
-                                                        ppp_is_active : 1,
-                                                        ppp_created_on: new Date(),
-                                                        ppp_created_by: req.session.publish_UserName,
-                                                        ppp_modified_on: new Date(),
-                                                        ppp_modified_by: req.session.publish_UserName
-                                                    }
-                                                    portletResponse = savePortlet( connection_ikon_cms,portletData );
-                                                    if(portletResponse == true){
-                                                        cnt = cnt + 1;
+                                                    console.log("=======================");
+                                                    console.log(req.body.portlets[i]);
+                                                    if(req.body.portlets[i] != undefined){
+                                                        var portletData = {
+                                                            ppp_id : response[0].maxPortletId,
+                                                            ppp_pp_id : results.MaxPageId[0].maxId,
+                                                            ppp_type : req.body.portlets[i].portletType,
+                                                            ppp_pkg_allow : req.body.portlets[i].packageCount == undefined || req.body.portlets[i].packageCount == undefined ? 0 : req.body.portlets[i].packageCount,
+                                                            ppp_comments : req.body.portlets[i].comment,
+                                                            ppp_is_active : 1,
+                                                            ppp_created_on: new Date(),
+                                                            ppp_created_by: req.session.publish_UserName,
+                                                            ppp_modified_on: new Date(),
+                                                            ppp_modified_by: req.session.publish_UserName
+                                                        }
+                                                        portletResponse = savePortlet( connection_ikon_cms,portletData );
+                                                        if(portletResponse == true){
+
+                                                            if(cnt == count){
+                                                                connection_ikon_cms.release();
+                                                                res.send({"success" : true,"status":200, "message":"Page successfully added."});
+                                                            }else{
+                                                                cnt = cnt + 1;
+                                                                loop(cnt);
+                                                            }
+                                                        }
+                                                    }else{
+
                                                         if(cnt == count){
                                                             connection_ikon_cms.release();
                                                             res.send({"success" : true,"status":200, "message":"Page successfully added."});
                                                         }else{
+                                                            cnt = cnt + 1;
                                                             loop(cnt);
                                                         }
-                                                    }//if
+                                                        //connection_ikon_cms.release();
+                                                        //res.send({"success" : true,"status":200, "message":"Page successfully added."});
+                                                    }
+                                                   //if
                                                 } //if
                                             }); //getLastInsertedPortletId
                                     }//loop

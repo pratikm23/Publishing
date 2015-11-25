@@ -48,6 +48,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
 
                 $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['packageId'] = mapValue.pmpp_sp_pkg_id;
                 $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['portletMapId'] = mapValue.pmpp_id;
+
             });
          });
      };
@@ -84,34 +85,61 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
     }
 
     $scope.submitForm = function( $valid ){
-        if( $valid ) {
-            $scope.mapPackageData = [];
+        var errorCount = 0;
             $.each( $scope.mapPackage, function( mapKey, mapObject ) {
-               if( mapObject !== undefined ) {
-                    var mapPackageKey = mapKey;
-                    $.each( mapObject, function( key, mapPackageObject ) {
-                        $scope.mapPackageData.push({
-                            "portletId" : mapPackageKey,
-                            "packageId" : mapPackageObject.packageId,
-                            "portletMapId" : mapPackageObject.portletMapId
-                        });
-                    });
-                }
-            });
-            if( $scope.mapPackageData.length > 0 ) {
-                ngProgress.start();
-                mapPackage.addOrUpdateMapPortletData( $scope.mapPackageData, function( response ){
-                    if (response.success) {
-                        toastr.success(response.message);
-                        ngProgress.complete();
-                        setTimeout( function() {
-                            $scope.init();
-                        }, 1000 );
-
+            if( mapObject !== undefined ) {
+                var mapPackageKey = mapKey;
+                $.each( mapObject, function( key, mapPackageObject ) {
+                    var packageObj = {
+                        "packageId": mapPackageObject.packageId
                     }
+                    mapPackage.getPackageInfo(packageObj, function (response) {
+                        if (response.error == true) {
+                            $("#packageId_" +  mapPackageObject.packageId);
+                            $("#packageId_" + mapPackageObject.packageId).focus();
+                            //$scope.mapPackageForm.$setPristine();
+                            errorCount++;
+                            $valid = false;
+                        }
+                    });
+
+
                 });
             }
-        }
+        });
+        setTimeout(function () {
+            alert( $valid );
+            if (errorCount == 0 && $valid) {
+                $scope.mapPackageData = [];
+                $.each($scope.mapPackage, function (mapKey, mapObject) {
+                    if (mapObject !== undefined) {
+                        var mapPackageKey = mapKey;
+                        $.each(mapObject, function (key, mapPackageObject) {
+                            $scope.mapPackageData.push({
+                                "portletId": mapPackageKey,
+                                "packageId": mapPackageObject.packageId,
+                                "portletMapId": mapPackageObject.portletMapId
+                            });
+                        });
+                    }
+                });
+                if ($scope.mapPackageData.length > 0) {
+                    ngProgress.start();
+
+                    mapPackage.addOrUpdateMapPortletData($scope.mapPackageData, function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            ngProgress.complete();
+                            setTimeout(function () {
+                                $scope.init();
+                            }, 1000);
+
+                        }
+                    });
+                }
+
+            }
+        }, 1000 );
     }
     $scope.isNumber = function(e) {
         var key = e.keyCode ? e.keyCode : e.which;
