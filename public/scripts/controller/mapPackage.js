@@ -75,6 +75,11 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
                         toastr.error(response.message);
                         $("#packageId_" + packageIndex).val('');
                         $("#packageId_" + packageIndex).focus();
+                        $scope.mapPackageForm.$invalid = true;
+                        $scope.mapPackageForm.$submitted = true;
+                        $("#package_" + packageIndex ).removeClass("ng-hide");
+                    }else {
+                        $("#package_" + packageIndex ).addClass("ng-hide");
                     }
                 });
             }, 200);
@@ -97,7 +102,6 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
                         if (response.error == true) {
                             $("#packageId_" +  mapPackageObject.packageId);
                             $("#packageId_" + mapPackageObject.packageId).focus();
-                            //$scope.mapPackageForm.$setPristine();
                             errorCount++;
                             $valid = false;
                         }
@@ -108,7 +112,6 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
             }
         });
         setTimeout(function () {
-            alert( $valid );
             if (errorCount == 0 && $valid) {
                 $scope.mapPackageData = [];
                 $.each($scope.mapPackage, function (mapKey, mapObject) {
