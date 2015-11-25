@@ -102,7 +102,17 @@ exports.logout = function (req, res, next) {
         if (req.session) {
             if (req.session.publish_UserName) {
                 if (req.session.publish_StoreId) {
-                    req.session = null;
+                    // req.session = null;
+                     var session = req.session;
+                    session.publish_UserId = null;
+                    session.publish_UserRole = null;
+                    session.publish_UserName = null;
+                    session.publish_Password = null;
+                    session.publish_Email = null;
+                    session.publish_FullName = null;
+                    session.publish_lastlogin = null;
+                    session.publish_UserType = null;
+                    session.publish_StoreId = null;
                     res.redirect('/accountlogin');
                 }
                 else {
@@ -219,7 +229,17 @@ function getPages(role) {
  * @description display forgot password page
  */
 exports.viewForgotPassword = function (req, res, next) {
-    req.session = null;
+    // req.session = null;
+     var session = req.session;
+    session.publish_UserId = null;
+    session.publish_UserRole = null;
+    session.publish_UserName = null;
+    session.publish_Password = null;
+    session.publish_Email = null;
+    session.publish_FullName = null;
+    session.publish_lastlogin = null;
+    session.publish_UserType = null;
+    session.publish_StoreId = null;
     res.render('account-forgot', { error: '', msg: '' });
 }
 /**
@@ -283,7 +303,17 @@ exports.forgotPassword = function (req, res, next) {
  * @description displays change password page
  */
 exports.viewChangePassword = function (req, res, next) {
-    req.session = null;
+    // req.session = null;
+        var session = req.session;
+        session.publish_UserId = null;
+        session.publish_UserRole = null;
+        session.publish_UserName = null;
+        session.publish_Password = null;
+        session.publish_Email = null;
+        session.publish_FullName = null;
+        session.publish_lastlogin = null;
+        session.publish_UserType = null;
+        session.publish_StoreId = null;
     res.render('account-changepassword', { error: '' });
 }
 /**
