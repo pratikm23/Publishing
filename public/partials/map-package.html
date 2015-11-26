@@ -2,7 +2,7 @@
     <h2 class="content-header-title">Map Packages</h2>
 </div>
 <div class="text-center">
-   {{head_page_dc }}> {{head_page_type}} > {{head_page_title}} >  {{head_page_file}}
+  <b> {{head_page_dc }}> {{head_page_type}} > {{head_page_title}} >  {{head_page_file}} </b>
 </div>
 <form method="post" class="form-horizontal" role="form" name="mapPackageForm" data-ng-submit="submitForm(mapPackageForm.$valid)" novalidate>
     <div class="row" style="margin-left:20%">
@@ -34,17 +34,16 @@
                                         <input type="hidden" name="comment_{{$index}}" ng-model="mapPackage[$index]['comment']" />
                                         {{item.ppp_comments}}
                                     </td>
-                                    {{item.ppp_pkg_allow}}
+                                    
                                     <td ng-class="item.ppp_pkg_allow <= 4 ? 'map_td_not_scrollable' : ( item.ppp_pkg_allow > 4 ? 'map_td_scrollable' : '') "
 
                                             >
 
                                         <div style="float:left;display: inline-flex" data-ng-repeat="i in [] | range:item.ppp_pkg_allow">
                                             <div>
-                                                <input type="number" style="width: 80px" id="packageId_{{$parent.$index}}_{{i}}" name="packageId_{{$parent.$index}}_{{i}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-blur="checkValidPackage( mapPackage[item.ppp_id][i],  $parent.$index + '_' + i );" ng-keypress="isNumber($event)" min="0" required/>
-
+                                                <input type="number" style="width: 80px" id="packageId_{{$parent.$index}}_{{i}}" name="packageId_{{$parent.$index}}_{{i}}" ng-model="mapPackage[item.ppp_id][i]['packageId']" class="form-control" ng-blur="checkValidPackage( item.ppp_id,  $parent.$index + '_' + i );" ng-keypress="isNumber($event)" min="0" required/>
                                                 <span style="color: red" id="xysz" ng-show="mapPackageForm.$submitted || mapPackageForm.packageId_{{$parent.$index}}_{{i}}.$dirty">
-                                                    <span  id="package_{{$parent.$index}}_{{i}}" ng-show="mapPackageForm.packageId_{{$parent.$index}}_{{i}}.$error.required">This field is required.</span>
+                                                    <span  ng-show="mapPackageForm.packageId_{{$parent.$index}}_{{i}}.$error.required">This field is required.</span>
                                                 </span>
 
                                             </div>

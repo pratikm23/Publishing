@@ -53,6 +53,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
 
                 $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['packageId'] = mapValue.pmpp_sp_pkg_id;
                 $scope.mapPackage[mapValue.pmpp_ppp_id][mKey]['portletMapId'] = mapValue.pmpp_id;
+                $scope.portletId = mapValue.pmpp_id;
 
             });
          });
@@ -69,22 +70,21 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
     })();
 
 
-    $scope.checkValidPackage = function( packageId , packageIndex ) {
+    $scope.checkValidPackage = function( portletId , packageIndex ) {
         if( $( "#packageId_" + packageIndex ).val() != '' ) {
             delay(function () {
                 var packageObj = {
                     "packageId": $("#packageId_" + packageIndex).val()
                 }
+
                 mapPackage.getPackageInfo(packageObj, function (response) {
                     if (response.error == true) {
                         toastr.error(response.message);
                         $("#packageId_" + packageIndex).val('');
                         $("#packageId_" + packageIndex).focus();
-                        $scope.mapPackageForm.$invalid = true;
-                        $scope.mapPackageForm.$submitted = true;
-                        $("#package_" + packageIndex ).removeClass("ng-hide");
-                    }else {
-                        $("#package_" + packageIndex ).addClass("ng-hide");
+
+                        var splitIndex = packageIndex.split('_')[1]; 
+                        $scope.mapPackage[portletId][splitIndex]['packageId'] = '';
                     }
                 });
             }, 200);
@@ -105,8 +105,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
                     }
                     mapPackage.getPackageInfo(packageObj, function (response) {
                         if (response.error == true) {
-                            $("#packageId_" +  mapPackageObject.packageId);
-                            $("#packageId_" + mapPackageObject.packageId).focus();
+
                             errorCount++;
                             $valid = false;
                         }

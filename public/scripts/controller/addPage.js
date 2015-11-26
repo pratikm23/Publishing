@@ -96,7 +96,7 @@ $scope.init();
                 portlets : $scope.portletsArray
             };
         if (isValid) {
-            if($scope.pagefilename.match(/[a-z]*[.][a-z]*/) == $scope.pagefilename){
+            if($scope.pagefilename.match(/[a-z]+[.][a-z]+/) == $scope.pagefilename){
                 if($stateParams.pageId){
                         $scope.editInProgress = true;
                         pageData.page_id = $stateParams.pageId;

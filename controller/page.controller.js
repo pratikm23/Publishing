@@ -109,7 +109,7 @@ exports.addPage = function (req, res, next) {
                                 console.log(count)
                                 if(count == 0){
                                     connection_ikon_cms.release();
-                                    res.send({"success" : true,"status":200, "message":"Page successfully added."});
+                                    res.send({"success" : true,"status":200, "message": req.body.page_filename+" page successfully added."});
                                 }else{
                                     var cnt = 0;
                                     loop(0);
@@ -140,7 +140,7 @@ exports.addPage = function (req, res, next) {
 
                                                             if(cnt == count){
                                                                 connection_ikon_cms.release();
-                                                                res.send({"success" : true,"status":200, "message":"Page successfully added."});
+                                                                res.send({"success" : true,"status":200, "message": req.body.page_filename + " page successfully added."});
                                                             }else{
                                                                 cnt = cnt + 1;
                                                                 loop(cnt);
@@ -150,7 +150,7 @@ exports.addPage = function (req, res, next) {
 
                                                         if(cnt == count){
                                                             connection_ikon_cms.release();
-                                                            res.send({"success" : true,"status":200, "message":"Page successfully added."});
+                                                            res.send({"success" : true,"status":200, "message":req.body.page_filename+" page successfully added."});
                                                         }else{
                                                             cnt = cnt + 1;
                                                             loop(cnt);
