@@ -136,11 +136,11 @@ function addOrUpdateMappingPackageData( connection_ikon_cms, mappingData, req, r
             console.log(response);
             if( response.length > 0 ) {
                 if( mappingData[count].packageId != response[0].pmpp_sp_pkg_id ) {
-                    //updateMappingPackageDetails( req, res, connection_ikon_cms, response[0], mappingData[count] );
+                    updateMappingPackageDetails( req, res, connection_ikon_cms, response[0], mappingData[count] );
                 }
             }else {
                 //console.log(mappingData);
-                //addMappingPackageDetails( req, res, connection_ikon_cms, mappingData[count] );
+                addMappingPackageDetails( req, res, connection_ikon_cms, mappingData[count] );
             }
 
             if( count == mappingCount ){
