@@ -132,7 +132,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
                 });
                 if ($scope.mapPackageData.length > 0) {
                     ngProgress.start();
-
+//console.log($scope.mapPackageData);
                     mapPackage.addOrUpdateMapPortletData($scope.mapPackageData, function (response) {
                         if (response.success) {
                             toastr.success(response.message);

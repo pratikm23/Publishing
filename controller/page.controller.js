@@ -3,7 +3,7 @@ var async = require("async");
 var pageManager = require('../models/pageModel');
 
 exports.getPageData = function (req, res, next) {
-    console.log('in function...');
+    //console.log('in function...');
     try {
             if (req.session && req.session.publish_UserName) {
                 mysql.getConnection('CMS', function (err, connection_ikon_cms) {
@@ -56,9 +56,9 @@ exports.getPageData = function (req, res, next) {
 };
 
 exports.addPage = function (req, res, next) {
-    console.log('add page');
+    //console.log('add page');
     try {
-        console.log('in add page');
+        //console.log('in add page');
         if (req.session && req.session.publish_UserName) {
           mysql.getConnection('CMS', function (err, connection_ikon_cms) {
                 async.parallel({
@@ -99,14 +99,14 @@ exports.addPage = function (req, res, next) {
                                 pp_modified_on: new Date(),
                                 pp_modified_by: req.session.publish_UserName
                             }
-                            console.log(data);
-                            console.log('portlets array');
-                            console.log(req.body.portlets);
+                            //console.log(data);
+                            //console.log('portlets array');
+                            //console.log(req.body.portlets);
                             var result = saveIconPage(connection_ikon_cms,data);
                             if( result == true ){
                                 //Fetching object length as .length of just object gives undefined, hence using Object.keys
                                 var count = Object.keys(req.body.portlets).length;
-                                console.log(count)
+                                //console.log(count)
                                 if(count == 0){
                                     connection_ikon_cms.release();
                                     res.send({"success" : true,"status":200, "message": req.body.page_filename+" page successfully added."});
@@ -115,13 +115,13 @@ exports.addPage = function (req, res, next) {
                                     loop(0);
                                     function loop( cnt ) {
                                         var i = cnt;
-                                        console.log(i)
+                                        //console.log(i)
                                         pageManager.getLastInsertedPortletId( connection_ikon_cms, function(err, response ) {
                                                 if(err){
                                                     connection_ikon_cms.release();   
                                                 }else{
-                                                    console.log("=======================");
-                                                    console.log(req.body.portlets[i]);
+                                                   // console.log("=======================");
+                                                    //console.log(req.body.portlets[i]);
                                                     if(req.body.portlets[i] != undefined){
                                                         var portletData = {
                                                             ppp_id : response[0].maxPortletId,
@@ -178,7 +178,7 @@ exports.addPage = function (req, res, next) {
 
 
 exports.editPage = function (req, res, next) {
-    console.log('edit page');
+    //console.log('edit page');
     try {
         if (req.session && req.session.publish_UserName) {
           mysql.getConnection('CMS', function (err, connection_ikon_cms) {
@@ -232,17 +232,17 @@ exports.editPage = function (req, res, next) {
                                 pp_modified_on: new Date(),
                                 pp_modified_by: req.session.publish_UserName
                             }
-                            console.log(data);
-                            console.log('portlets array');
-                            console.log(req.body.portlets);
+                            //console.log(data);
+                            //console.log('portlets array');
+                            //console.log(req.body.portlets);
                             var result = saveIconPage(connection_ikon_cms,data);
                             if( result == true ){
                                 //Fetching object length as .length of just object gives undefined, hence using Object.keys
                                 var count = Object.keys(req.body.portlets).length;
-                                console.log('existingPortlets');
-                                console.log(req.body.portletIds);
-                                console.log('new portlets');
-                                console.log(req.body.portlets);
+                                //console.log('existingPortlets');
+                                //console.log(req.body.portletIds);
+                                //console.log('new portlets');
+                                //console.log(req.body.portlets);
 
                                 if(count == 0){
                                     connection_ikon_cms.release();
@@ -252,13 +252,13 @@ exports.editPage = function (req, res, next) {
                                     loop(0);
                                     function loop( cnt ) {
                                         var i = cnt;
-                                        console.log('i:::'+i);
-                                        console.log('jijijijiijijijijij');
-                                        console.log(req.body.portlets);
-                                        console.log(req.body.portlets[i] != undefined && req.body.portlets[i].portletId != undefined);
+                                        //console.log('i:::'+i);
+                                        //console.log('jijijijiijijijijij');
+                                        //console.log(req.body.portlets);
+                                        //console.log(req.body.portlets[i] != undefined && req.body.portlets[i].portletId != undefined);
                                        //If portlet id is found : 
                                        if(req.body.portlets[i] != undefined && req.body.portlets[i].portletId != undefined && req.body.portlets[i].isUpdate != 1){
-                                        console.log('portlet id is not undefined');
+                                       // console.log('portlet id is not undefined');
                                             var portletData = {
                                                             ppp_id : req.body.portlets[i].portletId,
                                                             ppp_pp_id : req.body.page_id,
@@ -271,8 +271,8 @@ exports.editPage = function (req, res, next) {
                                                             ppp_modified_on: new Date(),
                                                             ppp_modified_by: req.session.publish_UserName
                                                         }
-                                                        console.log('portletData');
-                                                        console.log(portletData);
+                                                        //console.log('portletData');
+                                                        //console.log(portletData);
                                                         portletResponse = savePortlet( connection_ikon_cms,portletData );
                                                         if(portletResponse == true){
                                                             cnt = cnt + 1;
@@ -285,7 +285,7 @@ exports.editPage = function (req, res, next) {
                                                         }//if
                                         }else if(req.body.portlets[i] != undefined && req.body.portlets[i].portletId == undefined && req.body.portlets[i].isUpdate != 1){
                                             //If portlet id is undefined 
-                                            console.log('portlet id is undefined');
+                                            //console.log('portlet id is undefined');
                                             pageManager.getLastInsertedPortletId( connection_ikon_cms, function(err, response ) {
                                                 if(err){
                                                     connection_ikon_cms.release();   
@@ -302,8 +302,8 @@ exports.editPage = function (req, res, next) {
                                                                         ppp_modified_on: new Date(),
                                                                         ppp_modified_by: req.session.publish_UserName
                                                                     }
-                                                                    console.log('portletData');
-                                                                    console.log(portletData);
+                                                                    //console.log('portletData');
+                                                                    //console.log(portletData);
                                                                     portletResponse = savePortlet( connection_ikon_cms,portletData );
                                                                     if(portletResponse == true){
                                                                         cnt = cnt + 1;
@@ -318,13 +318,13 @@ exports.editPage = function (req, res, next) {
                                                 });
                                         }else{
                                             //just increment :
-                                            console.log('just increment..');
-                                            console.log(req.body.portlets[i]);
+                                            //console.log('just increment..');
+                                            //console.log(req.body.portlets[i]);
                                             // console.log(req.body.portlets[i].portletId != undefined);
                                             
                                             cnt = cnt + 1;
                                             if(cnt == count){
-                                                console.log('count is  EQUALLL count');
+                                                //console.log('count is  EQUALLL count');
                                                 connection_ikon_cms.release();
                                                 res.send({"success" : true,"status":200, "message":"Page successfully updated."});
                                             }else{

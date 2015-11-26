@@ -35,8 +35,8 @@ $scope.init = function(){
             state : "add-page"
     }
 
-    console.log('iddd');
-    console.log($stateParams.pageId);
+    //console.log('iddd');
+    //console.log($stateParams.pageId);
     if($stateParams.pageId){
             //Change predata  for edit mode accordingly.
             $scope.edit_mode = true;
@@ -46,7 +46,7 @@ $scope.init = function(){
     }
 
 
-    console.log(preData);
+    //console.log(preData);
    
 
     Page.getPageData(preData,function(data){
@@ -101,7 +101,7 @@ $scope.init();
                         $scope.editInProgress = true;
                         pageData.page_id = $stateParams.pageId;
                         pageData.portletIds = $scope.portletIds;
-                        console.log('in edit');
+                       // console.log('in edit');
                         Page.editPage(pageData,function(data){
                             ngProgress.start();
                             if(data.status == 101){

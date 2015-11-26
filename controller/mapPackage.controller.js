@@ -132,13 +132,15 @@ function addOrUpdateMappingPackageData( connection_ikon_cms, mappingData, req, r
     loopMappingData( 0 );
     function loopMappingData( count ) {
         mapPackageManager.checkPortletDetailsExist( connection_ikon_cms, mappingData[count].portletId, mappingData[count].portletMapId, function( err, response ){
+            console.log(mappingData[count]);
+            console.log(response);
             if( response.length > 0 ) {
                 if( mappingData[count].packageId != response[0].pmpp_sp_pkg_id ) {
-                    updateMappingPackageDetails( req, res, connection_ikon_cms, response[0], mappingData[count] );
+                    //updateMappingPackageDetails( req, res, connection_ikon_cms, response[0], mappingData[count] );
                 }
             }else {
-                console.log(mappingData);
-                addMappingPackageDetails( req, res, connection_ikon_cms, mappingData[count] );
+                //console.log(mappingData);
+                //addMappingPackageDetails( req, res, connection_ikon_cms, mappingData[count] );
             }
 
             if( count == mappingCount ){
@@ -205,12 +207,12 @@ function updateMappingPackageDetails( req, res, connection_ikon_cms, updateData,
 
 function addMappingPackageDetails(  req, res, connection_ikon_cms, mappingData ) {
     mapPackageManager.getLastInsertedMapPortletId( connection_ikon_cms , function( err, lastInsertedId ) {
-        console.log( "lastInsertedId " + lastInsertedId );
+        //console.log( "lastInsertedId " + lastInsertedId );
         if (err) {
             connection_ikon_cms.release();
             res.status(500).json(err.message);
         } else {
-            console.log( mappingData );
+           // console.log( mappingData );
             if(mappingData.portletMapId != undefined){
                 lastInsertedId = mappingData.portletMapId;
             }else{
