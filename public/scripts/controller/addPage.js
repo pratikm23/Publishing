@@ -106,6 +106,7 @@ $scope.init();
                             ngProgress.start();
                             if(data.status == 101){
                                 toastr.error(data.message);
+                                $scope.editInProgress = false;
                             }
                             if(data.status == 200){
                                 toastr.success(data.message);

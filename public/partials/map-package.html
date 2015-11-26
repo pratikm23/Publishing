@@ -35,9 +35,7 @@
                                         {{item.ppp_comments}}
                                     </td>
                                     
-                                    <td ng-class="item.ppp_pkg_allow <= 4 ? 'map_td_not_scrollable' : ( item.ppp_pkg_allow > 4 ? 'map_td_scrollable' : '') "
-
-                                            >
+                                    <td ng-class="item.ppp_pkg_allow <= 4 ? 'map_td_not_scrollable' : ( item.ppp_pkg_allow > 4 ? 'map_td_scrollable' : '') ">
 
                                         <div style="float:left;display: inline-flex" data-ng-repeat="i in [] | range:item.ppp_pkg_allow">
                                             <div>
