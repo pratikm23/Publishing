@@ -82,12 +82,12 @@
                                     <tbody data-ng-repeat="detail in pageDetails | startFrom:listcurrentPage*listpageSize | limitTo:listpageSize ">
                                     <tr>
                                         <!--<td class="col-md-1 col-xs-1 text-center">{{$index+1+(listcurrentPage*listpageSize)}}</td>-->
-                                        <td class="col-md-1 col-xs-1 text-center">{{detail.pp_id}}</td>
-                                        <td class="col-md-2 col-xs-2 text-center" style=" max-width: 43px ;word-wrap: break-word;">{{detail.pp_page_title}}</td>
-                                        <td class="col-md-3 col-xs-3 text-center">{{detail.cd_name}}</td>
-                                        <td class="col-md-2 col-xs-2 text-center" style=" max-width: 43px ;word-wrap: break-word;">{{detail.pp_page_file}}</td>
-                                        <td class="col-md-1 col-xs-1 text-center">{{detail.count}}</td>
-                                        <td class="col-md-2 col-xs-2 text-center">{{detail.pp_date}}</td>
+                                        <td class="col-md-1 col-xs-1 text-left">{{detail.pp_id}}</td>
+                                        <td class="col-md-2 col-xs-2 text-left" style=" max-width: 43px ;word-wrap: break-word;">{{detail.pp_page_title}}</td>
+                                        <td class="col-md-3 col-xs-3 text-left">{{detail.cd_name}}</td>
+                                        <td class="col-md-2 col-xs-2 text-left" style=" max-width: 43px ;word-wrap: break-word;">{{detail.pp_page_file}}</td>
+                                        <td class="col-md-1 col-xs-1 text-left">{{detail.count}}</td>
+                                        <td class="col-md-2 col-xs-2 text-left">{{detail.pp_date}}</td>
                                         <td class="col-md-3 col-xs-3">
                                             <div class="row">
                                                 <div class="col-md-3 col-xs-3"><a href="" data-ng-click="EditPage(detail.pp_id)" title="Edit"><i class="fa fa-edit" title="Edit"></i></a></div>

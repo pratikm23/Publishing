@@ -5,6 +5,10 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
     $('.removeActiveClass').removeClass('active');
     $('#map-package').addClass('active');
     $scope.PageTitle = 'Map Package';
+    $scope.head_page_type = window.localStorage.getItem('curr_map_page_type')
+    $scope.head_page_dc = window.localStorage.getItem('curr_map_page_dc')
+    $scope.head_page_file = window.localStorage.getItem('curr_map_page_filename')
+    $scope.head_page_title = window.localStorage.getItem('curr_map_page_title')
 
     $scope.success = "";
     $scope.successvisible = false;
@@ -28,6 +32,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
 
         mapPackage.getMappingData(data, function (mappingPageData) {
             $scope.mappingData = angular.copy(mappingPageData.mappingData);
+
             $scope.mappingPackageData = angular.copy(mappingPageData.mappingPackageData);
 
             var mappingArray = [];

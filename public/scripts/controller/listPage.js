@@ -49,9 +49,18 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
     }
 
    $scope.EditPage = function(pageid){
+
        $state.go('edit-page',{'pageId':pageid});
    }
     $scope.MapPage = function(pageid){
+     //   window.localStorage.setItem('curr_map_distribution_channel',$scope.pageDetails[pageid].cd_name);
+        console.log( $scope.distributionChannels);
+        debugger;
+        window.localStorage.setItem('curr_map_page_dc',_.findWhere( $scope.distributionChannels, {cd_id: _.findWhere($scope.pageDetails, {pp_id: pageid}).pp_dc_id }).cd_name);
+        window.localStorage.setItem('curr_map_page_type',_.findWhere($scope.pageDetails, {pp_id: pageid}).cd_name);
+        window.localStorage.setItem('curr_map_page_title',_.findWhere($scope.pageDetails, {pp_id: pageid}).pp_page_title);
+        window.localStorage.setItem('curr_map_page_filename',_.findWhere($scope.pageDetails, {pp_id: pageid}).pp_page_file);
+
         $state.go('map-package',{'pageId':pageid});
     }
 });
