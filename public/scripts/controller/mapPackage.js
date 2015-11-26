@@ -17,6 +17,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
     $scope.CurrentPage = $state.current.name;
     ngProgress.color('yellowgreen');
     ngProgress.height('3px');
+    $scope.hideReset = false;
 
     $scope.init = function() {
         if ($stateParams.pageId == '') {
@@ -38,6 +39,7 @@ myApp.controller('mapPackageCtrl', function( $scope, $http, $stateParams, $state
             var mappingArray = [];
             var mKey = 0;
             angular.forEach($scope.mappingPackageData, function (mapValue, mapKey) {
+                $scope.hideReset = true;
                 if (_.contains(mappingArray, mapValue.pmpp_ppp_id)) {
                     mKey++;
                 } else {
