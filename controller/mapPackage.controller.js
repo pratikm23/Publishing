@@ -66,7 +66,7 @@ exports.getPackageInfo = function (req, res, next) {
                                 connection_ikon_cms.release();
                                 res.send({
                                     error: true,
-                                    message: 'The given PackageId is either deleted or disabled !. Please provide a valid package Id',
+                                    message: 'The given Package Id is either blocked or deleted!. Please provide valid Package Id',
                                     status: 500
                                 });/*var portletIds = [];
                     console.log( req.body );
@@ -91,7 +91,7 @@ exports.getPackageInfo = function (req, res, next) {
                     connection_ikon_cms.release();
                     res.send({
                         error: true,
-                        message: 'Please select a package Id',
+                        message: 'Please select a Package Id',
                         status: 500
                     });
                 }
@@ -147,7 +147,7 @@ function addOrUpdateMappingPackageData( connection_ikon_cms, mappingData, req, r
                 connection_ikon_cms.release();
                 res.send({
                     success: true,
-                    message: 'Mapping data added successfully',
+                    message: 'Package Id mapped successfully',
                     status: 200
                 });
             }else {

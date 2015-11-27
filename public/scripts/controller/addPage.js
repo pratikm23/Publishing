@@ -135,7 +135,7 @@ $scope.init();
                         });
                 }
             }else{
-                toastr.error('Invalid Page File Name . Page File Name must be in given format e.g. home.php');
+                toastr.error('Page File Name must be in given format e.g. home.php');
             }
         }
     };

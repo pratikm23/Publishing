@@ -30,7 +30,7 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
     $scope.search = function(valid) {
         if (valid) {
             if ($scope.selectedPageTitle && $scope.selectedPageTitle.length < 3) {
-                toastr.error("Page title to be searched should be minimum 3 characters");
+                toastr.error("Please enter atleast 3 characters.");
             }
             else{
                 $scope.disable_btn = false;

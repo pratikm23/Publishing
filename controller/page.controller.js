@@ -81,10 +81,10 @@ exports.addPage = function (req, res, next) {
                     },function (err, results) {
                         if (results.PageExists) {
                             connection_ikon_cms.release();
-                            res.send({"success" : false,"status":101,"message" : "Page File Name must be unique."});
+                            res.send({"success" : false,"status":101,"message" : "Page File Name must be unique"});
                         }else if(results.HomePageExists){
                             connection_ikon_cms.release();
-                            res.send({"success" : false,"status":101,"message" : "Homepage already created for the given distribution channel."});
+                            res.send({"success" : false,"status":101,"message" : "Home page already created for selected distribution channel"});
                         } else {
                             var data = {
                                 pp_id : results.MaxPageId[0].maxId,
@@ -109,7 +109,7 @@ exports.addPage = function (req, res, next) {
                                 //console.log(count)
                                 if(count == 0){
                                     connection_ikon_cms.release();
-                                    res.send({"success" : true,"status":200, "message": req.body.page_filename+" page successfully added."});
+                                    res.send({"success" : true,"status":200, "message": req.body.page_filename+" page added successfully"});
                                 }else{
                                     var cnt = 0;
                                     loop(0);
@@ -140,7 +140,7 @@ exports.addPage = function (req, res, next) {
 
                                                             if(cnt == count){
                                                                 connection_ikon_cms.release();
-                                                                res.send({"success" : true,"status":200, "message": req.body.page_filename + " page successfully added."});
+                                                                res.send({"success" : true,"status":200, "message": req.body.page_filename + " page added successfully"});
                                                             }else{
                                                                 cnt = cnt + 1;
                                                                 loop(cnt);
@@ -150,7 +150,7 @@ exports.addPage = function (req, res, next) {
 
                                                         if(cnt == count){
                                                             connection_ikon_cms.release();
-                                                            res.send({"success" : true,"status":200, "message":req.body.page_filename+" page successfully added."});
+                                                            res.send({"success" : true,"status":200, "message":req.body.page_filename+" page added successfully"});
                                                         }else{
                                                             cnt = cnt + 1;
                                                             loop(cnt);
@@ -211,11 +211,11 @@ exports.editPage = function (req, res, next) {
                     },function (err, results) {
                         if (results.PageExists) {
                             connection_ikon_cms.release();
-                            res.send({"success" : false,"status":101,"message" : "Page File Name must be unique."});
+                            res.send({"success" : false,"status":101,"message" : "Page File Name must be unique"});
                         }
                         else if(results.HomePageExists){
                             connection_ikon_cms.release();
-                            res.send({"success" : false,"status":101,"message" : "Homepage already created for the given distribution channel."});
+                            res.send({"success" : false,"status":101,"message" : "Home page already created for selected distribution channel"});
                         }
                          else {
 
@@ -246,7 +246,7 @@ exports.editPage = function (req, res, next) {
 
                                 if(count == 0){
                                     connection_ikon_cms.release();
-                                    res.send({"success" : true,"status":200, "message":"Page successfully updated."});
+                                    res.send({"success" : true,"status":200, "message":"Page updated successfully"});
                                 }else{
                                     var cnt = 0;
                                     loop(0);
@@ -278,7 +278,7 @@ exports.editPage = function (req, res, next) {
                                                             cnt = cnt + 1;
                                                             if(cnt == count){
                                                                 connection_ikon_cms.release();
-                                                                res.send({"success" : true,"status":200, "message":"Page successfully updated."});
+                                                                res.send({"success" : true,"status":200, "message":"Page updated successfully"});
                                                             }else{
                                                                 loop(cnt);
                                                             }
@@ -309,7 +309,7 @@ exports.editPage = function (req, res, next) {
                                                                         cnt = cnt + 1;
                                                                         if(cnt == count){
                                                                             connection_ikon_cms.release();
-                                                                            res.send({"success" : true,"status":200, "message":"Page successfully updated."});
+                                                                            res.send({"success" : true,"status":200, "message":"Page updated successfully"});
                                                                         }else{
                                                                             loop(cnt);
                                                                         }
@@ -326,7 +326,7 @@ exports.editPage = function (req, res, next) {
                                             if(cnt == count){
                                                 //console.log('count is  EQUALLL count');
                                                 connection_ikon_cms.release();
-                                                res.send({"success" : true,"status":200, "message":"Page successfully updated."});
+                                                res.send({"success" : true,"status":200, "message":"Page updated successfully"});
                                             }else{
 
                                                 loop(cnt);
