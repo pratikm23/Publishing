@@ -156,3 +156,83 @@ exports.savePortlet = function(dbConnection,data,callback){
 }
 
 
+exports.getPackageIdsByPageName = function( dbConnection, pageName, storeId,callback ){
+	dbConnection.query("SELECT pub_map.pmpp_sp_pkg_id as packageId ,portlet.ppp_id as portletId, pub_map.pmpp_id as portletMapId  FROM icn_pub_map_portlet_pkg  AS pub_map "+
+		"Right OUTER JOIN icn_pub_page_portlet AS portlet ON ( pub_map.pmpp_ppp_id = portlet.ppp_id ) "+
+		"Right OUTER JOIN icn_pub_page AS pub ON ( pub.pp_id = portlet.ppp_pp_id ) "+
+		"WHERE pub.pp_page_file = ? AND pub.pp_sp_st_id = ? "+
+		"AND portlet.ppp_is_active = 1 AND ISNULL( portlet.ppp_crud_isactive ) "+
+		"AND ISNULL( pub.pp_crud_isactive ) AND ISNULL( pub_map.pmpp_crud_isactive ) AND portlet.ppp_pkg_allow >= 0 ORDER BY portlet.ppp_id,pub_map.pmpp_id",[pageName,storeId], function (err, response) {
+		callback(err,response);
+	});
+}
+
+exports.getPortletContentByPackageId = function( dbConnection, packageIds,callback ){
+	 // dbConnection.query("SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') as timestamp, GROUP_CONCAT(DISTINCT(mmd.cmd_entity_detail)) as allowedContentTypes, SUBSTR(CONCAT('z_',MD5(RAND()),MD5(RAND())),1,32) as promoid, "+
+	 // 					" md5(cd.cd_name) as contentTypeMD5, md5(cf.cf_url_base) as contentFileURLMD5 ,pub_map.pmpp_ppp_id as  portletId,cft.cft_thumbnail_img_browse,cft.cft_thumbnail_size,cmd.cm_title,cmd.cm_genre,cd.cd_id,cd.cd_name, cf.cf_url ,cf.cf_cm_id,sp.sp_pkg_id FROM  icn_store_package AS sp "+
+	 // 					"JOIN icn_pub_map_portlet_pkg AS pub_map  ON( pub_map.pmpp_sp_pkg_id = sp.sp_pkg_id ) "+
+  //                       "JOIN icn_pub_page_portlet AS ippp ON ippp.ppp_id = pub_map.pmpp_ppp_id "+
+  //                       "JOIN icn_pack_content_type AS pct ON pct.pct_pk_id = sp.sp_pk_id "+
+  //                       "JOIN icn_pack_content AS pc ON pc.pc_pct_id = pct.pct_id "+
+  //                       "JOIN content_files AS cf ON cf.cf_cm_id = pc.pc_cm_id "+
+  //                       "JOIN content_files_thumbnail AS cft ON cft.cft_cm_id = pc.pc_cm_id "+
+  //                       "JOIN content_metadata AS cmd ON cmd.cm_id = pc.pc_cm_id  "+
+  //                       "JOIN catalogue_detail AS cd ON cd.cd_id = cmd.cm_content_type "+
+  //                       "JOIN multiselect_metadata_detail mmd ON (mmd.cmd_group_id = ippp.ppp_cmd_id AND mmd.cmd_entity_detail = cmd.cm_content_type ) "+
+  //                       "WHERE sp.sp_pkg_id IN ("+packageIds+") AND cmd.cm_state = 4  AND cmd.cm_starts_from <= NOW() AND cmd.cm_expires_on >= NOW()  group by cf.cf_cm_id "
+ 	// 					, function (err, response) {
+ 	// 						//group by cf.cf_url
+		// callback(err,response);
+	 // });
+//Phase 2 query  : 
+// dbConnection.query("SELECT "+
+// 						"DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') as timestamp, "+ 
+// 					    "SUBSTR(CONCAT('z_',MD5(RAND()),MD5(RAND())),1,32) as promoid, "+
+// 					    "md5(cd.cd_name) as contentTypeMD5, "+
+// 					    "md5(cf.cf_url_base) as contentFileURLMD5 , "+ 
+// 						"ippp.ppp_id as portletId,pub_map.pmpp_sp_pkg_id, "+
+// 					   "cmd.cm_id,cmd.cm_title , cmd.cm_genre, cmd.cm_content_type, "+
+// 					   "cd.cd_name, "+
+// 					    "cf.cf_url, "+ 
+// 					    "cft.cft_thumbnail_img_browse, "+ 
+// 					    "cft.cft_thumbnail_size "+ 
+// 					"FROM "+ 
+// 						"multiselect_metadata_detail mmd "+
+// 					"JOIN  icn_pub_page_portlet ippp ON (mmd.cmd_group_id = ippp.ppp_cmd_id ) "+ 
+// 					"JOIN content_metadata cmd ON (mmd.cmd_entity_detail = cmd.cm_content_type) "+ 
+// 					"JOIN content_files cf ON (cf.cf_cm_id = cmd.cm_id)  "+
+// 					"JOIN icn_pack_content AS pc ON cf.cf_cm_id = pc.pc_cm_id  "+
+// 					"JOIN icn_pack_content_type AS pct ON pc.pc_pct_id = pct.pct_id "+ 
+// 					"JOIN icn_store_package as sp ON  pct.pct_pk_id = sp.sp_pk_id "+
+// 					"JOIN content_files_thumbnail cft ON (cft.cft_cm_id = cmd.cm_id)  "+
+// 					"JOIN catalogue_detail cd ON (mmd.cmd_entity_detail = cd.cd_id)  "+
+// 					"JOIN icn_pub_map_portlet_pkg AS pub_map  ON( pub_map.pmpp_ppp_id = ippp.ppp_id ) "+ 
+// 					"WHERE sp.sp_pkg_id IN ("+packageIds+")  "+
+// 						"AND cmd.cm_state = 4  AND cmd.cm_starts_from <= NOW() AND cmd.cm_expires_on >= NOW() "+ 
+// 						"AND ippp.ppp_crud_isactive IS NULL "+
+// 					"Group By portletId,cf.cf_cm_id "+
+// 					"Order By portletId,cmd.cm_id,ippp.ppp_id,cm_content_type", 
+//      function (err, response) {
+// 	//INNER JOIN content_files 
+// 		callback(err,response);
+// 	 });
+
+//Current query : 
+	dbConnection.query("SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') as timestamp, "+
+		"  SUBSTR(CONCAT('z_',MD5(RAND()),MD5(RAND())),1,32) as promoid, "+
+		" md5(cd.cd_name) as contentTypeMD5, md5(cf.cf_url_base) as contentFileURLMD5 ,pub_map.pmpp_ppp_id as  portletId,cft.cft_thumbnail_img_browse,cft.cft_thumbnail_size,cmd.cm_title,cmd.cm_genre,cd.cd_id,cd.cd_name, cf.cf_url ,cf.cf_cm_id,sp.sp_pkg_id FROM  icn_store_package AS sp "+
+		" JOIN icn_pub_map_portlet_pkg AS pub_map  ON( pub_map.pmpp_sp_pkg_id = sp.sp_pkg_id ) "+
+		" JOIN icn_pub_page_portlet AS ippp ON ippp.ppp_id = pub_map.pmpp_ppp_id "+
+		" JOIN icn_pack_content_type AS pct ON pct.pct_pk_id = sp.sp_pk_id "+
+		" JOIN icn_pack_content AS pc ON pc.pc_pct_id = pct.pct_id "+
+		" JOIN content_files AS cf ON cf.cf_cm_id = pc.pc_cm_id "+
+		" JOIN content_files_thumbnail AS cft ON cft.cft_cm_id = pc.pc_cm_id "+
+		" JOIN content_metadata AS cmd ON cmd.cm_id = pc.pc_cm_id "+
+		" JOIN catalogue_detail AS cd ON cd.cd_id = cmd.cm_content_type "+
+		"  WHERE sp.sp_pkg_id IN ("+packageIds+") AND ippp.ppp_crud_isactive IS NULL  AND cmd.cm_state = 4  AND cmd.cm_starts_from <= NOW() AND cmd.cm_expires_on >= NOW()  group by portletId,cf.cf_cm_id "+
+		" Order By portletId,cf.cf_cm_id ",
+		function (err, response) {
+			//INNER JOIN content_files
+			callback(err,response);
+		});
+}

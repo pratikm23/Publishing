@@ -8,7 +8,9 @@ var express         = require('express'),
     bodyParser      = require('body-parser'),
     methodOverride  = require('method-override'),
     cookieParser    = require('cookie-parser'),
-    session         = require('cookie-session');
+    session         = require('cookie-session'),
+    router          =  express.Router(),
+    cors            = require('cors');
 //console.log(path.join(__dirname, 'public'))
 
 module.exports = function(){
@@ -50,5 +52,13 @@ module.exports = function(){
         });
     });
 
+    app.use(function(req, res, next) {
+          res.header("Access-Control-Allow-Origin", "*");
+          res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+          next();
+    });
+
+    app.use(cors());
+    
     return app;
 }

@@ -2,6 +2,58 @@ var mysql = require('../config/db').pool;
 var async = require("async");
 var pageManager = require('../models/pageModel');
 
+
+// service without multiselect ..
+exports.getPortletContentByPageName = function(req,res,next ){
+    try {
+        // if (req.session && req.session.publish_UserName) {
+        mysql.getConnection('CMS', function (err, connection_ikon_cms) {
+            async.waterfall([
+                function(callback){
+                    pageManager.getPackageIdsByPageName(connection_ikon_cms, req.body.pageName,req.body.storeId, function(err,portletData){
+                        if(err){
+                            connection_ikon_cms.release();
+                        }else{
+                            var packageIds = [];
+                            console.log( portletData );
+                            console.log( "===============================");
+                            async.each(portletData, function(portlet,callback){
+                                if(portlet.packageId!= null)
+                                packageIds.push(portlet.packageId);
+                                callback();
+                            },function(err){
+                                if(err){
+
+                                }
+
+                            });
+                            callback(null,portletData,packageIds);
+
+                        }
+                    });
+                    // callback()
+                },
+                function(portletData,packageIds,callback){
+                    console.log('inside another function');
+                    pageManager.getPortletContentByPackageId(connection_ikon_cms,packageIds,function(err,response){
+                        callback(err,{'publishData':portletData,'portletData':response});
+                    })
+                }
+            ],function(err,results){
+                // console.log('results');
+                // console.log(results);
+
+                connection_ikon_cms.release();
+                res.send(results);
+            })
+
+        });
+        // }
+    }catch(err){
+        res.send(err);
+    }
+}
+
 exports.getPageData = function (req, res, next) {
     //console.log('in function...');
     try {
