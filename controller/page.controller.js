@@ -15,8 +15,6 @@ exports.getPortletContentByPageName = function(req,res,next ){
                             connection_ikon_cms.release();
                         }else{
                             var packageIds = [];
-                            console.log( portletData );
-                            console.log( "===============================");
                             async.each(portletData, function(portlet,callback){
                                 if(portlet.packageId!= null)
                                 packageIds.push(portlet.packageId);
@@ -34,7 +32,7 @@ exports.getPortletContentByPageName = function(req,res,next ){
                     // callback()
                 },
                 function(portletData,packageIds,callback){
-                    console.log('inside another function');
+                   // console.log('inside another function');
                     pageManager.getPortletContentByPackageId(connection_ikon_cms,packageIds,function(err,response){
                         callback(err,{'publishData':portletData,'portletData':response});
                     })
