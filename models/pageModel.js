@@ -235,4 +235,5 @@ exports.getPortletContentByPackageId = function( dbConnection, packageIds,callba
 			//INNER JOIN content_files
 			callback(err,response);
 		});
+
 }
