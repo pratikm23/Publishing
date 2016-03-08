@@ -6,6 +6,8 @@ var crypto = require('crypto');
 algorithm = 'aes-256-ctr', //Algorithm used for encrytion
  password = 'd6F3Efeq'; //Encryption password
 
+var logger = require("../controller/logger.controller");
+
 function encrypt(text){
     var cipher = crypto.createCipher(algorithm,password)
     var crypted = cipher.update(text,'utf8','hex')
@@ -19,7 +21,6 @@ function decrypt(text){
     dec += decipher.final('utf8');
     return dec;
 }
-
 
 function getDate(val) {
     var d = new Date(val);
@@ -38,6 +39,7 @@ function getTime(val) {
     var selectdate = Pad("0", hour, 2) + ':' + Pad("0", minite, 2) + ':' + Pad("0", second, 2);
     return selectdate;
 }
+
 function Pad(padString, value, length) {
     var str = value.toString();
     while (str.length < length)
@@ -83,85 +85,81 @@ exports.pages = function (req, res, next) {
     }
 }
 
-/**
- * @function login
- * @param req
- * @param res
- * @param next
- * @description user can login
- */
-//exports.login = function (req, res, next) {
-//    if (req.session) {
-//        if (req.session.publish_UserName) {
-//            if (req.session.publish_StoreId) {
-//                res.redirect("/add-page");
-//            }
-//            else {
-//                res.redirect("/accountlogin");
-//            }
-//        }
-//        else {
-//            res.render('account-login', { error: '' });
-//        }
-//    }
-//    else {
-//        res.render('account-login', { error: '' });
-//    }
-//}
 exports.login = function (req, res, next) {
-    if(req.cookies.publish_remember == 1 && req.cookies.publish_username != '' ){
-        mysql.getConnection('CMS', function (err, connection_ikon_cms) {
-            userManager.getUserDetails( connection_ikon_cms, decrypt(req.cookies.publish_username), decrypt(req.cookies.publish_password), function( err, userDetails ){
-                if (err) {
-                    res.render('account-login', { error: 'Error in database connection' });
-                } else {
-                    if (userDetails.length > 0) {
-                        if (userDetails[0].ld_active == 1) {
-                            if(userDetails[0].ld_role == 'Store Manager') {
-                                connection_ikon_cms.release();
-                                var session = req.session;
-                                session.publish_UserId = userDetails[0].ld_id;
-                                session.publish_UserRole = userDetails[0].ld_role;
-                                session.publish_UserName = userDetails[0].ld_user_name;
-                                session.publish_Password = userDetails[0].ld_user_pwd;
-                                session.publish_Email = userDetails[0].ld_email_id;
-                                session.publish_FullName = userDetails[0].ld_display_name;
-                                session.publish_lastlogin = userDetails[0].ld_last_login;
-                                session.publish_UserType = userDetails[0].ld_user_type;
-                                session.publish_StoreId = userDetails[0].su_st_id;
-                                if (req.session) {
-                                    if (req.session.publish_UserName) {
-                                        if (req.session.publish_StoreId) {
-                                            res.redirect("/");
+    if (req.session) {
+        if (req.session.publish_UserName) {
+            res.redirect("/");
+        } else {
+            if (req.session.publish_remember == 1 && req.session.publish_username != '') {
+                mysql.getConnection('CMS', function (err, connection_ikon_cms) {
+                    if (err) {
+                        logger.writeLog('login : ' + JSON.stringify(err));
+                    } else {
+                        userManager.getUserDetails(connection_ikon_cms, decrypt(req.cookies.publish_username), decrypt(req.cookies.publish_password), function (err, userDetails) {
+                            if (err) {
+                                logger.writeLog('login : ' + JSON.stringify( "Error in database connection."));
+                                res.render('account-login', {error: 'Error in database connection'});
+                            } else {
+                                if (userDetails.length > 0) {
+                                    if (userDetails[0].ld_active == 1) {
+                                        if (userDetails[0].ld_role == 'Store Manager') {
+                                            connection_ikon_cms.release();
+                                            var session = req.session;
+                                            session.publish_UserId = userDetails[0].ld_id;
+                                            session.publish_UserRole = userDetails[0].ld_role;
+                                            session.publish_UserName = userDetails[0].ld_user_name;
+                                            session.publish_Password = userDetails[0].ld_user_pwd;
+                                            session.publish_Email = userDetails[0].ld_email_id;
+                                            session.publish_FullName = userDetails[0].ld_display_name;
+                                            session.publish_lastlogin = userDetails[0].ld_last_login;
+                                            session.publish_UserType = userDetails[0].ld_user_type;
+                                            session.publish_StoreId = userDetails[0].su_st_id;//coming from new store's user table.
+                                            if (req.session) {
+                                                if (req.session.publish_UserName) {
+                                                    if (req.session.publish_StoreId) {
+                                                        res.redirect("/");
+                                                    }
+                                                    else {
+                                                        logger.writeLog('login : ' + JSON.stringify( "You can't access Publishing."));
+                                                        res.redirect("/accountlogin");
+                                                    }
+                                                }
+                                                else {
+                                                    logger.writeLog('login : ' + JSON.stringify( "You can't access Publishing."));
+                                                    res.render('account-login', {error: ''});
+                                                }
+                                            }
+                                            else {
+                                                logger.writeLog('login : ' + JSON.stringify( "You can't access Publishing."));
+                                                res.render('account-login', {error: ''});
+                                            }
                                         }
-                                        else {
-                                            res.redirect("/accountlogin");
-                                        }
+                                    }else {
+                                        logger.writeLog('login : ' + JSON.stringify( 'Your account has been disable.'));
+                                        res.render('account-login', {error: ''});
                                     }
-                                    else {
-                                        res.render('account-login', { error: '' });
-                                    }
-                                }
-                                else {
-                                    res.render('account-login', { error: '' });
+                                } else {
+                                    connection_ikon_cms.release();
+                                    logger.writeLog('login : ' + JSON.stringify( 'Invalid Username / Password.'));
+                                    res.render('account-login', {error: 'Invalid Username / Password.'});
                                 }
                             }
-                        }
+                        });
+                    }
+                });
+            } else if (req.session) {
+                if (req.session.publish_UserName) {
+                    if (req.session.publish_StoreId) {
+                        res.redirect("/#/add-page");
+                    }
+                    else {
+                        res.redirect("/accountlogin");
                     }
                 }
-            });
-        });
-    }else if (req.session) {
-        if (req.session.publish_UserName) {
-            if (req.session.publish_StoreId) {
-                res.redirect("/add-page");
+                else {
+                    res.render('account-login', {error: ''});
+                }
             }
-            else {
-                res.redirect("/accountlogin");
-            }
-        }
-        else {
-            res.render('account-login', { error: '' });
         }
     }
     else {
@@ -222,13 +220,17 @@ exports.logout = function (req, res, next) {
 exports.authenticate = function (req, res, next) {
     try {
         mysql.getConnection('CMS', function (err, connection_ikon_cms) {
-            if(req.body.rememberMe){
-                var minute = 10080 * 60 * 1000;
-                res.cookie('publish_remember', 1, { maxAge: minute });
-                res.cookie('publish_username', encrypt(req.body.username), { maxAge: minute });
-                res.cookie('publish_password', encrypt(req.body.password), { maxAge: minute });
+            if(err){
+                logger.writeLog('login : ' + JSON.stringify(err));
+            }else {
+                if (req.body.rememberMe) {
+                    var minute = 10080 * 60 * 1000;
+                    res.cookie('publish_remember', 1, {maxAge: minute});
+                    res.cookie('publish_username', encrypt(req.body.username), {maxAge: minute});
+                    res.cookie('publish_password', encrypt(req.body.password), {maxAge: minute});
+                }
+                userAuthDetails(connection_ikon_cms, req.body.username, req.body.password, req, res);
             }
-            userAuthDetails(connection_ikon_cms,req.body.username,req.body.password,req,res);
         });
     }
     catch (error) {
@@ -238,6 +240,7 @@ exports.authenticate = function (req, res, next) {
 function userAuthDetails(dbConnection, username,password,req,res){
     userManager.getUserDetails( dbConnection, username, password, function( err, userDetails ){
         if (err) {
+            logger.writeLog('login : ' + JSON.stringify(err));
             res.render('account-login', { error: 'Error in database connection' });
         } else {
             if (userDetails.length > 0) {
@@ -255,6 +258,7 @@ function userAuthDetails(dbConnection, username,password,req,res){
                         session.publish_StoreId = userDetails[0].su_st_id;//coming from new store's user table.
                         userManager.updateLastLoggedIn( dbConnection, userDetails[0].ld_id ,function(err,response){
                             if(err){
+                                logger.writeLog('login : ' + JSON.stringify(err));
                                 dbConnection.release();
                             }else{
                                 dbConnection.release();
@@ -263,24 +267,30 @@ function userAuthDetails(dbConnection, username,password,req,res){
                         })
                     } else {
                         dbConnection.release();
+                        logger.writeLog('login : ' + JSON.stringify('Only Store Admin/Manager are allowed to login'));
                         res.render('account-login', { error: 'Only Store Admin/Manager are allowed to login' });
                     }
                 }
                 else {
                     dbConnection.release();
+                    logger.writeLog('login : ' + JSON.stringify('Your account has been disable'));
                     res.render('account-login', { error: 'Your account has been disable' });
                 }
             } else {
                 dbConnection.release();
                 if( req.body.username != undefined && req.body.username.length == 0  &&  req.body.password.length == 0 ) {
+                    logger.writeLog('login : ' + JSON.stringify('Please enter username and password'));
                     res.render('account-login', {error: 'Please enter username and password'});
                 }else if(req.body.username != undefined && req.body.username.length != 0  &&  req.body.password.length == 0 ){
+                    logger.writeLog('login : ' + JSON.stringify('Please enter password'));
                     res.render('account-login', {error: 'Please enter password'});
                 }
                 else if(req.body.username != undefined && req.body.username.length == 0  &&  req.body.password.length != 0){
+                    logger.writeLog('login : ' + JSON.stringify('Please enter username'));
                     res.render('account-login', {error: 'Please enter username'});
                 }
                 else {
+                    logger.writeLog('login : ' + JSON.stringify('Invalid Username / Password'));
                     res.render('account-login', {error: 'Invalid Username / Password'});
                 }
             }

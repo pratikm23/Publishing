@@ -46,8 +46,7 @@ exports.createMapPortletData = function( dbConnection, data, callback ) {
 }
 
 exports.getPackageInfoByPackId = function( dbConnection, packageId, storeId, callback ) {
-    dbConnection.query('SELECT * ' +
-                        'FROM icn_store_package WHERE sp_pkg_id = ? ' +
+    dbConnection.query('SELECT * FROM icn_store_package WHERE sp_pkg_id = ? ' +
                         'AND sp_st_id = ? AND sp_is_active = 1 ' +
                         'AND ISNULL( sp_crud_isactive )',[ packageId, storeId ],
         function( err, response ) {
@@ -57,9 +56,6 @@ exports.getPackageInfoByPackId = function( dbConnection, packageId, storeId, cal
 }
 
 exports.checkPortletDetailsExist = function( dbConnection, portletId, portletMapId, callback ) {
-   console.log('SELECT * ' +
-       'FROM icn_pub_map_portlet_pkg WHERE pmpp_ppp_id = '+portletId + ' '+
-       'AND pmpp_id = '+ portletMapId +' AND ISNULL( pmpp_crud_isactive )')
     dbConnection.query('SELECT * ' +
         'FROM icn_pub_map_portlet_pkg WHERE pmpp_ppp_id = ? ' +
         'AND pmpp_id = ? AND ISNULL( pmpp_crud_isactive )',[ portletId, portletMapId ],
@@ -70,9 +66,6 @@ exports.checkPortletDetailsExist = function( dbConnection, portletId, portletMap
 }
 
 exports.updateMappingPackage = function( dbConnection, mappingData, callback ) {
-    //console.log( 'UPDATE icn_pub_map_portlet_pkg SET ' +
-                //'pmpp_crud_isactive = '+mappingData.pmpp_id+' WHERE pmpp_ppp_id = '+mappingData.pmpp_ppp_id );
-
     dbConnection.query('UPDATE icn_pub_map_portlet_pkg SET ' +
         'pmpp_crud_isactive = ? WHERE pmpp_ppp_id = ? AND pmpp_id = ?', [ mappingData.pmpp_id, mappingData.pmpp_ppp_id, mappingData.pmpp_id ],
         function( err, response ) {

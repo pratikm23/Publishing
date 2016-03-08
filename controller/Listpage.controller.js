@@ -120,7 +120,7 @@ exports.exportPageList = function (req, res) {
 
         req.body.PageDetails.forEach(function (data) {
             var pageDetail = [];
-            pageDetail.push(cnt);
+            pageDetail.push(data.pp_id);
             pageDetail.push(data.pp_page_title);
             pageDetail.push(data.cd_name);
             pageDetail.push(data.pp_page_file);

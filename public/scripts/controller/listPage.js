@@ -22,7 +22,10 @@ myApp.controller('PageListingCtrl', function ($scope, $http, $stateParams , $sta
     });
 
     $scope.ExportPageList = function () {
-        ListPage.exportPageList({ PageDetails:  $scope.pageDetails }, function (data) {
+        var sortedArray = _.sortBy($scope.pageDetails, function(obj) { return obj.pp_id; });
+        console.log(sortedArray)
+
+        ListPage.exportPageList({ PageDetails:  sortedArray }, function (data) {
             var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8" });
             window.saveAs(blob, 'PageList.xlsx');
         });
